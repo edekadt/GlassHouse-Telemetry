@@ -159,11 +159,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\BaseClass.h" />
     <ClInclude Include="..\src\framework.h" />
     <ClInclude Include="..\src\pch.h" />
     <ClInclude Include="..\src\Test.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\BaseClass.cpp" />
     <ClCompile Include="..\src\dllmain.cpp" />
     <ClCompile Include="..\src\pch.cpp" />
     <ClCompile Include="..\src\Test.cpp" />
