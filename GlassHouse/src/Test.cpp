@@ -4,6 +4,10 @@
 #include <limits.h>
 #include "Test.h"
 
+#include <iostream>
+#include <nlohmann/json.hpp>
+#include <fstream>
+
 // DLL internal state variables:
 static unsigned long long previous_;  // Previous value, if any
 static unsigned long long current_;   // Current sequence value
@@ -58,4 +62,24 @@ unsigned fibonacci_index()
 GLASSHOUSE_API int return_thirteen()
 {
     return 13;
+}
+
+GLASSHOUSE_API void writeFile()
+{
+   try {
+        nlohmann::json data = {
+            {"nombre", "Juan"},
+            {"apellido", "Pérez"},
+            {"edad", 35}
+        };
+
+        std::ofstream output_file("datos.json");
+        output_file << data.dump();
+        output_file.close();
+
+        std::cout << "Los datos se han guardado correctamente en el archivo 'datos.json'" << std::endl;
+    }
+    catch (std::exception& e) {
+        std::cerr << "Error al guardar los datos en el archivo JSON: " << e.what() << std::endl;
+    }
 }

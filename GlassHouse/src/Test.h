@@ -35,3 +35,5 @@ extern "C" GLASSHOUSE_API unsigned fibonacci_index();
 
 
 extern "C" GLASSHOUSE_API int return_thirteen();
+
+extern "C" GLASSHOUSE_API void writeFile();
