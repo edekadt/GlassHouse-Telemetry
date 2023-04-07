@@ -6,9 +6,10 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <curl/curl.h>
+using namespace nlohmann;
 WriterThread::WriterThread()
 {
-    server = nullptr;
+    serverUrl = "";
 }
 
 void WriterThread::writeFile()
@@ -38,14 +39,14 @@ void WriterThread::writeServer()
            {"apellido", "P�rez"},
            {"edad", 35}
     };
-
+    CURL* server;
     std::string json_data = data.dump();
     if (server == nullptr)
         server = curl_easy_init();
     try
     {
         if (server) {
-            curl_easy_setopt(server, CURLOPT_URL, "http://example.com/save_json");
+            curl_easy_setopt(server, CURLOPT_URL, serverUrl);
             curl_easy_setopt(server, CURLOPT_CUSTOMREQUEST, "POST");
             curl_easy_setopt(server, CURLOPT_HTTPHEADER, "Content-Type: application/json");
             curl_easy_setopt(server, CURLOPT_POSTFIELDS, json_data.c_str());
@@ -66,4 +67,26 @@ void WriterThread::writeServer()
         std::cerr << "Error al enviar los datos al servidor: " << e.what() << std::endl;
     }
 
+}
+
+void WriterThread::readServer()
+{
+    CURL* server;
+    CURLcode res;
+    std::string response;
+    server = curl_easy_init();
+    if (server) {
+        curl_easy_setopt(server, CURLOPT_URL, serverUrl);
+        curl_easy_setopt(server, CURLOPT_WRITEFUNCTION, [](char* data, size_t size, size_t nmemb, std::string* writerData) -> size_t {
+            writerData->append(data, size * nmemb);
+            return size * nmemb;
+            });
+        curl_easy_setopt(server, CURLOPT_WRITEDATA, &response);
+        res = curl_easy_perform(server);
+        if (res != CURLE_OK) {
+            std::cout << "Error al enviar la solicitud: " << curl_easy_strerror(res) << std::endl;
+        }
+        curl_easy_cleanup(server);
+    }
+    json response_json = json::parse(response);
 }

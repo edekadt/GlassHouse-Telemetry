@@ -8,6 +8,7 @@
 #define GLASSHOUSE_API __declspec(dllimport)
 #endif
 #include <thread>
+#include <iostream>
 class CURL;
 class GLASSHOUSE_API WriterThread
 {
@@ -18,8 +19,9 @@ protected:
 
 	void writeFile();
 	void writeServer();
+	void readServer();
 private:
-	CURL* server;
+	std::string serverUrl;
 };
 
 #endif	// WRITERTHREAD_H
