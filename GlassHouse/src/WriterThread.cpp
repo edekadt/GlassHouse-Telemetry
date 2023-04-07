@@ -16,7 +16,7 @@ void WriterThread::writeFile()
     try {
         nlohmann::json data = {
             {"nombre", "Juan"},
-            {"apellido", "Pérez"},
+            {"apellido", "Pï¿½rez"},
             {"edad", 35}
         };
 
@@ -35,7 +35,7 @@ void WriterThread::writeServer()
 {
     nlohmann::json data = {
            {"nombre", "Juan"},
-           {"apellido", "Pérez"},
+           {"apellido", "Pï¿½rez"},
            {"edad", 35}
     };
 
