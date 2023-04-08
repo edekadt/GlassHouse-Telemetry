@@ -3,25 +3,18 @@
 #include "WriterThread.h"
 #include <iostream>
 
-#include <nlohmann/json.hpp>
 #include <fstream>
 #include <curl/curl.h>
-using namespace nlohmann;
+
 WriterThread::WriterThread()
 {
     serverUrl = "http://localhost:3000/data";
     filePath = "datos.json";
 }
 
-void WriterThread::writeFile()
+void WriterThread::writeFile(nlohmann::json data)
 {
     try {
-        nlohmann::json data = {
-            {"nombre", "Juan"},
-            {"apellido", "Perez"},
-            {"edad", 35}
-        };
-
         std::ofstream output_file(filePath);
         output_file << data.dump();
         output_file.close();
@@ -36,21 +29,18 @@ void WriterThread::writeFile()
 void WriterThread::readFile()
 {
     std::ifstream input_file(filePath);
-    json data;
+    nlohmann::json data;
     if (input_file.is_open()) {
         input_file >> data;
     }
 }
 
-void WriterThread::writeServer()
+void WriterThread::writeServer(nlohmann::json data)
 {
-    nlohmann::json data = {
-           {"nombre", "Juan"},
-           {"apellido", "Perez"},
-           {"edad", 35}
-    };
-    CURL* server = server = curl_easy_init();
-    std::string json_data = data.dump();      
+    CURL* server;
+    std::string json_data = data.dump();
+    if (server == nullptr)
+        server = curl_easy_init();
     try
     {
         if (server) {
@@ -96,5 +86,5 @@ void WriterThread::readServer()
         }
         curl_easy_cleanup(server);
     }
-    json response_json = json::parse(response);
+    nlohmann::json response_json = nlohmann::json::parse(response);
 }
