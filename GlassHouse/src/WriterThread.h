@@ -5,7 +5,9 @@
 
 #include <thread>
 
-class GLASSHOUSE_API WriterThread
+class Event;
+
+class WriterThread
 {
 public:
 	WriterThread();
