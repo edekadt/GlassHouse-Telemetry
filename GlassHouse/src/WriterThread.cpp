@@ -38,9 +38,8 @@ void WriterThread::readFile()
 void WriterThread::writeServer(nlohmann::json data)
 {
     CURL* server;
+    server = curl_easy_init();
     std::string json_data = data.dump();
-    if (server == nullptr)
-        server = curl_easy_init();
     try
     {
         if (server) {
