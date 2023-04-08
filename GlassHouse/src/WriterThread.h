@@ -9,7 +9,6 @@
 #endif
 #include <thread>
 #include <iostream>
-class CURL;
 class GLASSHOUSE_API WriterThread
 {
 public:

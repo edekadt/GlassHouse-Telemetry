@@ -49,10 +49,8 @@ void WriterThread::writeServer()
            {"apellido", "Perez"},
            {"edad", 35}
     };
-    CURL* server;
-    std::string json_data = data.dump();
-    if (server == nullptr)
-        server = curl_easy_init();
+    CURL* server = server = curl_easy_init();
+    std::string json_data = data.dump();      
     try
     {
         if (server) {
@@ -81,13 +79,13 @@ void WriterThread::writeServer()
 
 void WriterThread::readServer()
 {
-    CURL* server;
+    CURL*server;
     CURLcode res;
     std::string response;
     server = curl_easy_init();
     if (server) {
         curl_easy_setopt(server, CURLOPT_URL, serverUrl);
-        curl_easy_setopt(server, CURLOPT_WRITEFUNCTION, [](char* data, size_t size, size_t nmemb, std::string* writerData) -> size_t {
+        curl_easy_setopt(server, CURLOPT_WRITEFUNCTION, [](char* data, int size, int nmemb, std::string* writerData) -> int {
             writerData->append(data, size * nmemb);
             return size * nmemb;
             });
