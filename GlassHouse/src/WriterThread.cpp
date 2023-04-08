@@ -8,7 +8,7 @@
 
 WriterThread::WriterThread()
 {
-    serverUrl = "http://localhost:3000/data";
+    serverUrl = "http://localhost:3000/datos";
     filePath = "datos.json";
 }
 
@@ -35,33 +35,35 @@ void WriterThread::readFile()
     }
 }
 
-void WriterThread::writeServer(nlohmann::json data)
+void WriterThread::writeServer(nlohmann::json data, std::string sever)
 {
-    CURL* server;
-    server = curl_easy_init();
+    CURL* server = curl_easy_init();
     std::string json_data = data.dump();
     try
     {
         if (server) {
-            curl_easy_setopt(server, CURLOPT_URL, serverUrl);
-            curl_easy_setopt(server, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_easy_setopt(server, CURLOPT_HTTPHEADER, "Content-Type: application/json");
+            curl_easy_setopt(server, CURLOPT_URL, sever.c_str());
+            curl_easy_setopt(server, CURLOPT_POST, 1L);
+            struct curl_slist* headers = NULL;
+            headers = curl_slist_append(headers, "Content-Type: application/json");
+            curl_easy_setopt(server, CURLOPT_HTTPHEADER, headers);
             curl_easy_setopt(server, CURLOPT_POSTFIELDS, json_data.c_str());
 
-            CURLcode result = curl_easy_perform(server);
-            if (result != CURLE_OK) {
-                std::cerr << "Error al enviar los datos al servidor: " << curl_easy_strerror(result) << std::endl;
+            CURLcode res = curl_easy_perform(server);
+            if (res != CURLE_OK) {
+                std::cerr << "Error al enviar los datos al servidor: " << curl_easy_strerror(res) << std::endl;
             }
             else {
                 std::cout << "Datos enviados correctamente al servidor." << std::endl;
             }
 
             curl_easy_cleanup(server);
+            curl_slist_free_all(headers);
         }
     }
     catch (const std::exception& e)
     {
-        std::cerr << "Error al enviar los datos al servidor: " << e.what() << std::endl;
+        std::cerr << "Error al abrir servidor: " << e.what() << std::endl;
     }
 
 }

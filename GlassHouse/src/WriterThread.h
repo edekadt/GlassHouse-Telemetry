@@ -14,12 +14,13 @@ class GLASSHOUSE_API WriterThread
 {
 public:
 	WriterThread();
-protected:
-	std::thread thread;
 	void writeFile(nlohmann::json data);
 	void readFile();
-	void writeServer(nlohmann::json data);
+	void writeServer(nlohmann::json data,std::string sever);
 	void readServer();
+protected:
+	std::thread thread;
+
 private:
 	std::string serverUrl;
 	std::string filePath;
