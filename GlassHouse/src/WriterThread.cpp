@@ -69,13 +69,13 @@ void WriterThread::writeServer(nlohmann::json data)
 
 void WriterThread::readServer()
 {
-    CURL* server;
+    CURL*server;
     CURLcode res;
     std::string response;
     server = curl_easy_init();
     if (server) {
         curl_easy_setopt(server, CURLOPT_URL, serverUrl);
-        curl_easy_setopt(server, CURLOPT_WRITEFUNCTION, [](char* data, size_t size, size_t nmemb, std::string* writerData) -> size_t {
+        curl_easy_setopt(server, CURLOPT_WRITEFUNCTION, [](char* data, int size, int nmemb, std::string* writerData) -> int {
             writerData->append(data, size * nmemb);
             return size * nmemb;
             });

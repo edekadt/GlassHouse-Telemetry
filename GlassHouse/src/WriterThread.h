@@ -10,8 +10,6 @@
 #include <thread>
 #include <iostream>
 #include <nlohmann/json.hpp>
-
-class CURL;
 class GLASSHOUSE_API WriterThread
 {
 public:
