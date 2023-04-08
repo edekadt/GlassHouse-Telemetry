@@ -9,7 +9,8 @@
 using namespace nlohmann;
 WriterThread::WriterThread()
 {
-    serverUrl = "";
+    serverUrl = "http://localhost:3000/data";
+    filePath = "datos.json";
 }
 
 void WriterThread::writeFile()
@@ -17,11 +18,11 @@ void WriterThread::writeFile()
     try {
         nlohmann::json data = {
             {"nombre", "Juan"},
-            {"apellido", "P�rez"},
+            {"apellido", "Perez"},
             {"edad", 35}
         };
 
-        std::ofstream output_file("datos.json");
+        std::ofstream output_file(filePath);
         output_file << data.dump();
         output_file.close();
 
@@ -32,11 +33,20 @@ void WriterThread::writeFile()
     }
 }
 
+void WriterThread::readFile()
+{
+    std::ifstream input_file(filePath);
+    json data;
+    if (input_file.is_open()) {
+        input_file >> data;
+    }
+}
+
 void WriterThread::writeServer()
 {
     nlohmann::json data = {
            {"nombre", "Juan"},
-           {"apellido", "P�rez"},
+           {"apellido", "Perez"},
            {"edad", 35}
     };
     CURL* server;

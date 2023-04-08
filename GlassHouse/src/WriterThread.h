@@ -16,12 +16,13 @@ public:
 	WriterThread();
 protected:
 	std::thread thread;
-
 	void writeFile();
+	void readFile();
 	void writeServer();
 	void readServer();
 private:
 	std::string serverUrl;
+	std::string filePath;
 };
 
 #endif	// WRITERTHREAD_H
