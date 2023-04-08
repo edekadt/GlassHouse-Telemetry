@@ -8,7 +8,7 @@
 
 WriterThread::WriterThread()
 {
-    serverUrl = "http://localhost:3000/datos";
+    serverUrl = "http://localhost:3000/data";
     filePath = "datos.json";
 }
 
@@ -33,6 +33,7 @@ void WriterThread::readFile()
     if (input_file.is_open()) {
         input_file >> data;
     }
+    std::cout << data;
 }
 
 void WriterThread::writeServer(nlohmann::json data, std::string sever)
@@ -70,22 +71,25 @@ void WriterThread::writeServer(nlohmann::json data, std::string sever)
 
 void WriterThread::readServer()
 {
-    CURL*server;
-    CURLcode res;
+    nlohmann::json response_json;
     std::string response;
-    server = curl_easy_init();
+    CURL* server = curl_easy_init();
     if (server) {
-        curl_easy_setopt(server, CURLOPT_URL, serverUrl);
-        curl_easy_setopt(server, CURLOPT_WRITEFUNCTION, [](char* data, int size, int nmemb, std::string* writerData) -> int {
-            writerData->append(data, size * nmemb);
-            return size * nmemb;
-            });
+        curl_easy_setopt(server, CURLOPT_URL, serverUrl.c_str());
+        struct curl_slist* headers = NULL; 
+        //headers = curl_slist_append(headers, "Accept: text/html");
+        //headers = curl_slist_append(headers, "Accept: application/json");
+        //headers = curl_slist_append(headers, "Content-Type: application/json");
+        curl_easy_setopt(server, CURLOPT_FOLLOWLOCATION, 1L);
+        curl_easy_setopt(server, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(server, CURLOPT_WRITEDATA, &response);
-        res = curl_easy_perform(server);
+        curl_easy_setopt(server, CURLOPT_VERBOSE, 1L);
+        CURLcode res = curl_easy_perform(server);
         if (res != CURLE_OK) {
             std::cout << "Error al enviar la solicitud: " << curl_easy_strerror(res) << std::endl;
         }
         curl_easy_cleanup(server);
+        curl_slist_free_all(headers);
     }
-    nlohmann::json response_json = nlohmann::json::parse(response);
+    std::cout << response;
 }
