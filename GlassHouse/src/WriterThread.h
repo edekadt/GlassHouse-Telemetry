@@ -9,6 +9,8 @@
 #endif
 #include <thread>
 #include <iostream>
+#include <nlohmann/json.hpp>
+
 class CURL;
 class GLASSHOUSE_API WriterThread
 {
@@ -16,9 +18,9 @@ public:
 	WriterThread();
 protected:
 	std::thread thread;
-	void writeFile();
+	void writeFile(nlohmann::json data);
 	void readFile();
-	void writeServer();
+	void writeServer(nlohmann::json data);
 	void readServer();
 private:
 	std::string serverUrl;
