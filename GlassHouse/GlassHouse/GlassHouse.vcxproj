@@ -171,22 +171,22 @@
   <ItemGroup>
     <ClInclude Include="..\src\atomicops.h" />
     <ClInclude Include="..\src\BaseClass.h" />
+    <ClInclude Include="..\src\Events.h" />
     <ClInclude Include="..\src\framework.h" />
     <ClInclude Include="..\src\GlassHouse.h" />
     <ClInclude Include="..\src\pch.h" />
     <ClInclude Include="..\src\readerwriterqueue.h" />
     <ClInclude Include="..\src\Test.h" />
     <ClInclude Include="..\src\WriterThread.h" />
-    <ClInclude Include="Events.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\BaseClass.cpp" />
     <ClCompile Include="..\src\dllmain.cpp" />
+    <ClCompile Include="..\src\Events.cpp" />
     <ClCompile Include="..\src\GlassHouse.cpp" />
     <ClCompile Include="..\src\pch.cpp" />
     <ClCompile Include="..\src\Test.cpp" />
     <ClCompile Include="..\src\WriterThread.cpp" />
-    <ClCompile Include="Events.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

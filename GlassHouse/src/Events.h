@@ -1,16 +1,27 @@
 #pragma once
+#ifdef GLASSHOUSE_EXPORTS
+#define GLASSHOUSE_API __declspec(dllexport)
+#else
+#define GLASSHOUSE_API __declspec(dllimport)
+#endif
 
 #include <string>
 #include <iostream>
 
 enum GameEvents
 {
-	GAME_START, 
+	GAME_START,
 	GAME_END,
-	MOUSE_CLICK
+	MOUSE_CLICK,
+	WOUND_START,
+	WOUND_END,
+	SHOOT,
+	HEAL,
+	JUMP,
+	RETURN_HOME
 };
 
-class Events
+class GLASSHOUSE_API Events
 {
 protected:
 

@@ -39,7 +39,7 @@
     <ClInclude Include="..\src\WriterThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Events.h">
+    <ClInclude Include="..\src\Events.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -62,7 +62,7 @@
     <ClCompile Include="..\src\WriterThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Events.cpp">
+    <ClCompile Include="..\src\Events.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
