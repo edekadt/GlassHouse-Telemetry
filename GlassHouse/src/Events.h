@@ -8,7 +8,6 @@
 #include <string>
 #include <iostream>
 #include <nlohmann/json.hpp>
-#include <chrono>
 #include <ctime>
 
 enum GameEvents
@@ -30,10 +29,13 @@ class GLASSHOUSE_API Events
 {
 protected:
 
-	std::string time;
+	int time;
 	GameEvents gameEvent;
 
-	Events(GameEvents event) : gameEvent(event);
+	Events(GameEvents event) : gameEvent(event) {
+		time = std::time(0);
+		std::cout << time << "\n"; 
+	}
 
 public:
 
