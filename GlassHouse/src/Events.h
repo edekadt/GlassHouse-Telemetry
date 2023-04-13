@@ -11,6 +11,8 @@
 
 enum GameEvents
 {
+	SESSION_START,
+	SESSION_END,
 	GAME_START,
 	GAME_END,
 	MOUSE_CLICK,
@@ -29,9 +31,13 @@ protected:
 	float time;
 	GameEvents gameEvent;
 
+	Events(GameEvents event) : gameEvent(event) {
+		
+	}
+
 public:
 
-	Events(float timeEvent, GameEvents event) : time(timeEvent), gameEvent(event) {}
+	Events(){}
 
 	nlohmann::json serializeToJSON() const;
 
@@ -44,7 +50,7 @@ class GameStart : public Events
 {
 public:
 
-	GameStart(float timeEvent) : Events(timeEvent, GAME_START) 
+	GameStart() : Events(GAME_START) 
 	{
 		std::cout << "GAME START\n"; 
 	}
@@ -54,7 +60,7 @@ class GameEnd : public Events
 {
 public: 
 
-	GameEnd(float timeEvent) : Events(timeEvent, GAME_END)
+	GameEnd() : Events(GAME_END)
 	{
 		std::cout << "GAME END\n";
 	}
@@ -68,7 +74,7 @@ protected:
 
 public:
 
-	MouseClick(double timeEvent) : Events(timeEvent, MOUSE_CLICK) 
+	MouseClick() : Events(MOUSE_CLICK) 
 	{
 		mousePos = { 0, 0 }; 
 
