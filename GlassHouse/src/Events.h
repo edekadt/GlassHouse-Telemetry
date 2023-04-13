@@ -7,6 +7,7 @@
 
 #include <string>
 #include <iostream>
+#include <nlohmann/json.hpp>
 
 enum GameEvents
 {
@@ -32,7 +33,7 @@ public:
 
 	Events(float timeEvent, GameEvents event) : time(timeEvent), gameEvent(event) {}
 
-	std::string serializeToJSON() const;
+	nlohmann::json serializeToJSON() const;
 
 	GameEvents getType() const { return gameEvent; }
 
@@ -78,6 +79,6 @@ public:
 
 	void setMousePos(std::pair<int, int> pos) { mousePos = pos; }
 
-	std::string serializeToJSON() const;
+	nlohmann::json serializeToJSON() const;
 };
 
