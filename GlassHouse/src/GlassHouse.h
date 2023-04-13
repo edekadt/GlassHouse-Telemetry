@@ -19,9 +19,10 @@ class GLASSHOUSE_API GlassHouse
 {
 public:
 	GlassHouse();
+	~GlassHouse();
 
 private:
-
+	WriterThread* writerThread;
 };
 
 #endif // GLASSHOUSE_H

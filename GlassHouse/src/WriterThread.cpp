@@ -1,16 +1,26 @@
-
-#include "pch.h" // use stdafx.h in Visual Studio 2017 and earlier
-#include "WriterThread.h"
+#include <pch.h> // use stdafx.h in Visual Studio 2017 and earlier
+#include <WriterThread.h>
 #include <iostream>
-
 #include <fstream>
 #include <curl/curl.h>
+#include <Events.h>
 
 WriterThread::WriterThread()
 {
     serverUrl = "http://localhost:3000/data";
     filePath = "datos.json";
+	eventQueue = moodycamel::ReaderWriterQueue<Events>(INITIAL_QUEUE_SIZE);
+	thread = std::thread(&WriterThread::run, this);
+    //enqueue(SESSION_START());
 }
+
+void WriterThread::close()
+{
+	//TO DO: uncomment this: 
+	//enqueue(SESSION_END());
+	thread.join();
+}
+
 
 void WriterThread::writeFile(nlohmann::json data)
 {
@@ -92,4 +102,24 @@ void WriterThread::readServer()
         curl_slist_free_all(headers);
     }
     std::cout << response;
+}
+
+void WriterThread::enqueue(Events e)
+{
+	// We use emplace instead of try_emplace because try_emplace doesn't allocate additional memory if needed.
+	// That would do if we didn't want to excede a fixed number of events.
+	eventQueue.emplace(e);
+}
+
+void WriterThread::run()
+{
+	while (!exit)
+	{
+		Events event;
+		if (eventQueue.try_dequeue(event)) {
+			switch (event.getType()) {
+			//process different events
+			}
+		}
+	}
 }
