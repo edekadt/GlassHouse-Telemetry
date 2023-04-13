@@ -8,6 +8,8 @@
 #include <string>
 #include <iostream>
 #include <nlohmann/json.hpp>
+#include <chrono>
+#include <ctime>
 
 enum GameEvents
 {
@@ -28,12 +30,10 @@ class GLASSHOUSE_API Events
 {
 protected:
 
-	float time;
+	std::string time;
 	GameEvents gameEvent;
 
-	Events(GameEvents event) : gameEvent(event) {
-		
-	}
+	Events(GameEvents event) : gameEvent(event);
 
 public:
 
@@ -44,6 +44,26 @@ public:
 	GameEvents getType() const { return gameEvent; }
 
 	void releaseEvent(const Events* event) { delete event; }
+};
+
+class SessionStart : public Events
+{
+public:
+
+	SessionStart() : Events(SESSION_START)
+	{
+		std::cout << "SESSION START\n";
+	}
+};
+
+class SessionEnd : public Events
+{
+public:
+
+	SessionEnd() : Events(SESSION_END)
+	{
+		std::cout << "SESSION END\n";
+	}
 };
 
 class GameStart : public Events
