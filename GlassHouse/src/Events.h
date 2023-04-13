@@ -32,8 +32,7 @@ public:
 
 	Events(float timeEvent, GameEvents event) : time(timeEvent), gameEvent(event) {}
 
-	virtual std::string serializeToJSON() const;
-	virtual Events* clone() const = 0; 
+	std::string serializeToJSON() const;
 
 	GameEvents getType() const { return gameEvent; }
 
@@ -48,9 +47,6 @@ public:
 	{
 		std::cout << "GAME START\n"; 
 	}
-
-	virtual Events* clone() const; 
-	virtual std::string serializeToJSON() const;
 };
 
 class GameEnd : public Events
@@ -61,9 +57,6 @@ public:
 	{
 		std::cout << "GAME END\n";
 	}
-
-	virtual Events* clone() const;
-	virtual std::string serializeToJSON() const;
 };
 
 class MouseClick : public Events 
@@ -85,7 +78,6 @@ public:
 
 	void setMousePos(std::pair<int, int> pos) { mousePos = pos; }
 
-	virtual Events* clone() const;
-	virtual std::string serializeToJSON() const;
+	std::string serializeToJSON() const;
 };
 

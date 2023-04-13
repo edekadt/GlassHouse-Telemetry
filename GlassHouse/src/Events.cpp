@@ -14,27 +14,6 @@ std::string Events::serializeToJSON() const
     return information; 
 }
 
-std::string GameStart::serializeToJSON() const
-{
-    return Events::serializeToJSON();
-}
-
-Events* GameStart::clone() const
-{
-    return new GameStart(time);
-}
-
-std::string GameEnd::serializeToJSON() const
-{
-    return Events::serializeToJSON();
-}
-
-Events* GameEnd::clone() const
-{
-    return new GameEnd(time);
-}
-
-
 std::string MouseClick::serializeToJSON() const
 {
     std::string intro = Events::serializeToJSON(); 
@@ -47,9 +26,4 @@ std::string MouseClick::serializeToJSON() const
     std::string information = intro + data.dump();
 
     return information;
-}
-
-Events* MouseClick::clone() const
-{
-    return new MouseClick(time);
 }
