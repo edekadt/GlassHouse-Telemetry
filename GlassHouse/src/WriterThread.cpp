@@ -10,13 +10,10 @@ WriterThread::WriterThread()
     filePath = "datos.json";
 	eventQueue = moodycamel::ReaderWriterQueue<Events>(INITIAL_QUEUE_SIZE);
 	thread = std::thread(&WriterThread::run, this);
-    enqueue(SessionStart());
 }
 
 void WriterThread::close()
 {
-	//TO DO: uncomment this: 
-	enqueue(SessionEnd());
 	thread.join();
 }
 

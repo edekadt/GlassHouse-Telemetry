@@ -4,12 +4,14 @@
 
 GlassHouse::GlassHouse()
 {
-
 	writerThread = new WriterThread();
+	sessionID = std::hash<size_t>{}(std::time(0));
+	writerThread->enqueue(SessionStart(sessionID));
 }
 
 GlassHouse::~GlassHouse()
 {
+	writerThread->enqueue(SessionEnd(sessionID));
 	writerThread->close();
 	delete writerThread;
 }

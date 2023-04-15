@@ -53,20 +53,24 @@ class SessionStart : public Events
 {
 public:
 
-	SessionStart() : Events(SESSION_START)
+	SessionStart(size_t sessionID_) : Events(SESSION_START), sessionID(sessionID_)
 	{
-		std::cout << "SESSION START\n";
+		std::cout << "START OF SESSION " << sessionID << "\n";
 	}
+private:
+	size_t sessionID;
 };
 
 class SessionEnd : public Events
 {
 public:
 
-	SessionEnd() : Events(SESSION_END)
+	SessionEnd(size_t sessionID_) : Events(SESSION_END), sessionID(sessionID_)
 	{
-		std::cout << "SESSION END\n";
+		std::cout << "END OF SESSION " << sessionID << "\n";
 	}
+private:
+	size_t sessionID;
 };
 
 class GameStart : public Events

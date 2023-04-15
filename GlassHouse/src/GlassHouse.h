@@ -23,6 +23,8 @@ public:
 
 private:
 	WriterThread* writerThread;
+
+	size_t sessionID;
 };
 
 #endif // GLASSHOUSE_H
