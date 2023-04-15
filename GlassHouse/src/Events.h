@@ -22,7 +22,9 @@ enum GameEvents
 	SHOOT,
 	HEAL,
 	JUMP,
-	RETURN_HOME
+	RETURN_HOME,
+	CURSOR_ON_INFO,
+	CURSOR_OFF_INFO
 };
 
 class GLASSHOUSE_API Events
@@ -34,7 +36,6 @@ protected:
 
 	Events(GameEvents event) : gameEvent(event) {
 		time = std::time(0);
-		std::cout << time << "\n"; 
 	}
 
 public:
