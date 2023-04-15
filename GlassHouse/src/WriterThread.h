@@ -13,19 +13,19 @@
 #include <thread>
 #include <nlohmann/json.hpp>
 #include <readerwriterqueue.h>
+#include <Events.h>
 
 /*static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp)
 {
 	((std::string*)userp)->append((char*)contents, size * nmemb);
 	return size * nmemb;
 }*/
-class Events;
 
 class GLASSHOUSE_API WriterThread
 {
 public:
 	WriterThread();
-	~WriterThread();
+	~WriterThread() {};
 	void writeFile(nlohmann::json data);
 	void readFile();
 	void writeServer(nlohmann::json data,std::string sever);
@@ -33,12 +33,12 @@ public:
 	void close();
 	void enqueue(Events m);
 private:
+	bool exit = false;
 	std::thread thread;
 	moodycamel::ReaderWriterQueue<Events> eventQueue;
-
-private:
 	std::string serverUrl;
 	std::string filePath;
+
 	void run();
 };
 

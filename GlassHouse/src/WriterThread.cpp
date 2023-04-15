@@ -3,7 +3,6 @@
 #include <iostream>
 #include <fstream>
 #include <curl/curl.h>
-#include <Events.h>
 
 WriterThread::WriterThread()
 {
@@ -11,13 +10,13 @@ WriterThread::WriterThread()
     filePath = "datos.json";
 	eventQueue = moodycamel::ReaderWriterQueue<Events>(INITIAL_QUEUE_SIZE);
 	thread = std::thread(&WriterThread::run, this);
-    //enqueue(SESSION_START());
+    enqueue(SessionStart());
 }
 
 void WriterThread::close()
 {
 	//TO DO: uncomment this: 
-	//enqueue(SESSION_END());
+	enqueue(SessionEnd());
 	thread.join();
 }
 
@@ -91,7 +90,7 @@ void WriterThread::readServer()
         //headers = curl_slist_append(headers, "Accept: application/json");
         //headers = curl_slist_append(headers, "Content-Type: application/json");
         curl_easy_setopt(server, CURLOPT_FOLLOWLOCATION, 1L);
-        curl_easy_setopt(server, CURLOPT_WRITEFUNCTION, WriteCallback);
+        //curl_easy_setopt(server, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(server, CURLOPT_WRITEDATA, &response);
         curl_easy_setopt(server, CURLOPT_VERBOSE, 1L);
         CURLcode res = curl_easy_perform(server);
