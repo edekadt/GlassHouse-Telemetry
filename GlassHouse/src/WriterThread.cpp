@@ -3,12 +3,13 @@
 #include <iostream>
 #include <fstream>
 #include <curl/curl.h>
+#include <Events.h>
 
-WriterThread::WriterThread()
+WriterThread::WriterThread(size_t sessionID)
 {
     serverUrl = "http://localhost:3000/data";
-    filePath = "datos.json";
-	eventQueue = moodycamel::ReaderWriterQueue<Events>(INITIAL_QUEUE_SIZE);
+    filePath = "GlassHouse-data/GH_session_" + std::to_string(sessionID) + ".json";
+	eventQueue = moodycamel::ReaderWriterQueue<Events*>(INITIAL_QUEUE_SIZE);
     data = {};
     numEvents = 0;
 	thread = std::thread(&WriterThread::run, this);
@@ -18,7 +19,6 @@ void WriterThread::close()
 {
 	thread.join();
 }
-
 
 void WriterThread::writeFile(nlohmann::json& data)
 {
@@ -105,7 +105,7 @@ void WriterThread::readServer()
     std::cout << response;
 }
 
-void WriterThread::enqueue(Events e)
+void WriterThread::enqueue(Events* e)
 {
 	// We use emplace instead of try_emplace because try_emplace doesn't allocate additional memory if needed.
 	// That would do if we didn't want to excede a fixed number of events.
@@ -121,7 +121,7 @@ void WriterThread::run()
 {
 	while (!exit)
 	{
-		Events event;
+		Events* event;
 		/// <summary>
 		/// TO DO: if json can be built up during runtime, simply compileData and write every so many seconds or events
         /// Otherwise just let events pile up in the queue until the end of session. But at that point why even bother with the conc queue?
@@ -129,14 +129,14 @@ void WriterThread::run()
         
         if (eventQueue.try_dequeue(event)) {
             numEvents++;
-            data.push_back({ event.serializeToJSON() });
+            data.push_back({ event->serializeToJSON() });
 
             if (numEvents >= EVENTS_LIMIT) {
                 write(data);
                 data.clear();
             }
 
-            if (event.getType() == SESSION_END) {
+            if (event->getType() == SESSION_END) {
                 if (!data.empty()) write(data);
                 exit = true;
             }

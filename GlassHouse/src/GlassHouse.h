@@ -14,8 +14,10 @@
 #endif
 
 #include <memory>
+#include <WriteDestinations.h>
 
 class WriterThread;
+class Events;
 
 class GLASSHOUSE_API GlassHouse
 {
@@ -25,6 +27,8 @@ public:
 
 	static bool init();
 	static bool close();
+	void enqueue(Events* m);
+	void setWriteMode(WriteDestination mode_);
 
 private:
 	static std::unique_ptr<GlassHouse> instance;
