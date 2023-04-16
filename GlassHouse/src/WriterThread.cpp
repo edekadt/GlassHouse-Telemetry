@@ -10,6 +10,7 @@ WriterThread::WriterThread()
     filePath = "datos.json";
 	eventQueue = moodycamel::ReaderWriterQueue<Events>(INITIAL_QUEUE_SIZE);
     data = {};
+    numEvents = 0;
 	thread = std::thread(&WriterThread::run, this);
 }
 
@@ -127,11 +128,16 @@ void WriterThread::run()
 		/// </summary>
         
         if (eventQueue.try_dequeue(event)) {
+            numEvents++;
             data.push_back({ event.serializeToJSON() });
-            write(data);
-            data.clear();
+
+            if (numEvents >= EVENTS_LIMIT) {
+                write(data);
+                data.clear();
+            }
 
             if (event.getType() == SESSION_END) {
+                if (!data.empty()) write(data);
                 exit = true;
             }
         }
