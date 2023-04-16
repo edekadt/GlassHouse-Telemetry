@@ -42,6 +42,8 @@ public:
 
 	Events() {};
 
+	~Events() {};
+
 	nlohmann::json serializeToJSON() const;
 
 	GameEvents getType() const { return gameEvent; }
