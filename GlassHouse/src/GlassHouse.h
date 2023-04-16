@@ -27,7 +27,7 @@ public:
 
 	static bool init();
 	static bool close();
-	void enqueue(Events* m);
+	static void enqueue(Events* m);
 	void setWriteMode(WriteDestination mode_);
 
 private:

@@ -33,7 +33,7 @@ bool GlassHouse::close()
 
 void GlassHouse::enqueue(Events* m)
 {
-	writerThread->enqueue(m);
+	instance.get()->writerThread->enqueue(m);
 }
 
 void GlassHouse::setWriteMode(WriteDestination mode_)

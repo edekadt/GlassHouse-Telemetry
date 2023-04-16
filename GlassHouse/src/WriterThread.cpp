@@ -77,7 +77,6 @@ void WriterThread::writeServer(nlohmann::json& data, std::string sever)
     {
         std::cerr << "Error al abrir servidor: " << e.what() << std::endl;
     }
-
 }
 
 void WriterThread::readServer()
@@ -122,10 +121,6 @@ void WriterThread::run()
 	while (!exit)
 	{
 		Events* event;
-		/// <summary>
-		/// TO DO: if json can be built up during runtime, simply compileData and write every so many seconds or events
-        /// Otherwise just let events pile up in the queue until the end of session. But at that point why even bother with the conc queue?
-		/// </summary>
         
         if (eventQueue.try_dequeue(event)) {
             numEvents++;
@@ -140,6 +135,7 @@ void WriterThread::run()
                 if (!data.empty()) write(data);
                 exit = true;
             }
+            delete event;
         }
 	}
 }
