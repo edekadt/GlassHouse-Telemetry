@@ -4,11 +4,19 @@
 #include <fstream>
 #include <curl/curl.h>
 #include <Events.h>
+#include <filesystem>
+namespace fs = std::filesystem;
+
 
 WriterThread::WriterThread(size_t sessionID)
 {
+    std::string directory = "GlassHouse-data";
+
+    if (!fs::is_directory(directory) || !fs::exists(directory)) { // Check if folder exists
+        fs::create_directory(directory); // create folder
+    }
     serverUrl = "http://localhost:3000/data";
-    filePath = "GlassHouse-data/GH_session_" + std::to_string(sessionID) + ".json";
+    filePath = directory + "/GH_session_" + std::to_string(sessionID) + ".json";
 	eventQueue = moodycamel::ReaderWriterQueue<Events*>(INITIAL_QUEUE_SIZE);
     data = {};
     numEvents = 0;
