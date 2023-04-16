@@ -4,7 +4,7 @@
 #define WRITERTHREAD_H
 
 #define INITIAL_QUEUE_SIZE 100
-#define EVENTS_LIMIT 10
+#define EVENTS_LIMIT 25
 
 #ifdef GLASSHOUSE_EXPORTS
 #define GLASSHOUSE_API __declspec(dllexport)
@@ -41,7 +41,6 @@ private:
 	std::string serverUrl;
 	std::string filePath;
 	WriteDestination mode = WriteDestination::Local;
-	int numEvents;
 
 	void run();
 	void write(nlohmann::json& data);

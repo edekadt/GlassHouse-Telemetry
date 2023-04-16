@@ -19,7 +19,6 @@ WriterThread::WriterThread(size_t sessionID)
     filePath = directory + "/GH_session_" + std::to_string(sessionID) + ".json";
 	eventQueue = moodycamel::ReaderWriterQueue<Events*>(INITIAL_QUEUE_SIZE);
     data = {};
-    numEvents = 0;
 	thread = std::thread(&WriterThread::run, this);
 }
 
@@ -131,10 +130,9 @@ void WriterThread::run()
 		Events* event;
         
         if (eventQueue.try_dequeue(event)) {
-            numEvents++;
             data.push_back({ event->serializeToJSON() });
 
-            if (numEvents >= EVENTS_LIMIT) {
+            if (eventQueue.size_approx() >= EVENTS_LIMIT) {
                 write(data);
                 data.clear();
             }
