@@ -1,5 +1,5 @@
 // GlassHouse.h - Main interface class for external use of Glasshouse Telemetry functions
-// Simply instantiate the class at the start of your program with GlassHouse::init() and then close it at the end
+// Simply boot the system at the start of your program with GlassHouse::init() and then close it at the end
 // with GlassHouse::close()
 // 
 #pragma once
@@ -13,6 +13,8 @@
 #define GLASSHOUSE_API __declspec(dllimport)
 #endif
 
+#include <memory>
+
 class WriterThread;
 
 class GLASSHOUSE_API GlassHouse
@@ -21,7 +23,12 @@ public:
 	GlassHouse();
 	~GlassHouse();
 
+	static bool init();
+	static bool close();
+
 private:
+	static std::unique_ptr<GlassHouse> instance;
+
 	WriterThread* writerThread;
 
 	size_t sessionID;

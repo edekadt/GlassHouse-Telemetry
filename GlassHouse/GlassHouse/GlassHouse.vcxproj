@@ -177,6 +177,7 @@
     <ClInclude Include="..\src\pch.h" />
     <ClInclude Include="..\src\readerwriterqueue.h" />
     <ClInclude Include="..\src\Test.h" />
+    <ClInclude Include="..\src\WriteDestinations.h" />
     <ClInclude Include="..\src\WriterThread.h" />
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,8 @@
 #include <GlassHouse.h>
 #include <WriterThread.h>
 
+std::unique_ptr<GlassHouse> GlassHouse::instance = nullptr;
+
 GlassHouse::GlassHouse()
 {
 	writerThread = new WriterThread();
@@ -14,4 +16,16 @@ GlassHouse::~GlassHouse()
 	writerThread->enqueue(SessionEnd(sessionID));
 	writerThread->close();
 	delete writerThread;
+}
+
+bool GlassHouse::init()
+{
+	instance.reset(new GlassHouse());
+	return true;
+}
+
+bool GlassHouse::close()
+{
+	delete instance.release();
+	return true;
 }

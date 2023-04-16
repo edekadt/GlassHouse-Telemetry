@@ -18,7 +18,7 @@ void WriterThread::close()
 }
 
 
-void WriterThread::writeFile(nlohmann::json data)
+void WriterThread::writeFile(const nlohmann::json& data)
 {
     try {
         std::ofstream output_file(filePath);
@@ -42,7 +42,7 @@ void WriterThread::readFile()
     std::cout << data;
 }
 
-void WriterThread::writeServer(nlohmann::json data, std::string sever)
+void WriterThread::writeServer(const nlohmann::json& data, std::string sever)
 {
     CURL* server = curl_easy_init();
     std::string json_data = data.dump();
@@ -107,15 +107,43 @@ void WriterThread::enqueue(Events e)
 	eventQueue.emplace(e);
 }
 
+void WriterThread::setWriteMode(WriteDestination mode_)
+{
+    mode = mode_;
+}
+
 void WriterThread::run()
 {
 	while (!exit)
 	{
 		Events event;
-		if (eventQueue.try_dequeue(event)) {
-			switch (event.getType()) {
-			//process different events
-			}
+		/// <summary>
+		/// TO DO: if json can be built up during runtime, simply compileData and write every so many seconds or events
+        /// Otherwise just let events pile up in the queue until the end of session. But at that point why even bother with the conc queue?
+		/// </summary>
+		if (eventQueue.try_dequeue(event) && event.getType() == SESSION_END) {
+            exit = true;
+            nlohmann::json data = nlohmann::json();
+            compileData(data);
+            write(data);
 		}
 	}
+}
+
+void WriterThread::compileData(nlohmann::json& data)
+{
+    //TO DO: convert all queued events into a single json and return it.
+}
+
+void WriterThread::write(const nlohmann::json& data)
+{
+    switch (mode)
+    {
+    case WriteDestination::Local:
+        writeFile(data);
+        break;
+    case WriteDestination::Server:
+        writeServer(data, serverUrl);
+        break;
+    }
 }

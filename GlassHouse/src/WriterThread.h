@@ -14,6 +14,7 @@
 #include <nlohmann/json.hpp>
 #include <readerwriterqueue.h>
 #include <Events.h>
+#include <WriteDestinations.h>
 
 /*static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp)
 {
@@ -26,20 +27,25 @@ class GLASSHOUSE_API WriterThread
 public:
 	WriterThread();
 	~WriterThread() {};
-	void writeFile(nlohmann::json data);
-	void readFile();
-	void writeServer(nlohmann::json data,std::string sever);
-	void readServer();
 	void close();
 	void enqueue(Events m);
+	void setWriteMode(WriteDestination mode_);
+
 private:
 	bool exit = false;
 	std::thread thread;
 	moodycamel::ReaderWriterQueue<Events> eventQueue;
 	std::string serverUrl;
 	std::string filePath;
+	WriteDestination mode = WriteDestination::Local;
 
 	void run();
+	void compileData(nlohmann::json& data);
+	void write(const nlohmann::json& data);
+	void writeFile(const nlohmann::json& data);
+	void readFile();
+	void writeServer(const nlohmann::json& data, std::string sever);
+	void readServer();
 };
 
 #endif	// WRITERTHREAD_H
