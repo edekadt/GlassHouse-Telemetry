@@ -35,16 +35,16 @@ private:
 	bool exit = false;
 	std::thread thread;
 	moodycamel::ReaderWriterQueue<Events> eventQueue;
+	nlohmann::json data;
 	std::string serverUrl;
 	std::string filePath;
 	WriteDestination mode = WriteDestination::Local;
 
 	void run();
-	void compileData(nlohmann::json& data);
-	void write(const nlohmann::json& data);
-	void writeFile(const nlohmann::json& data);
+	void write(nlohmann::json& data);
+	void writeFile(nlohmann::json& data);
 	void readFile();
-	void writeServer(const nlohmann::json& data, std::string sever);
+	void writeServer(nlohmann::json& data, std::string sever);
 	void readServer();
 };
 
