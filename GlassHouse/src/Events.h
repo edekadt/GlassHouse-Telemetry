@@ -24,7 +24,9 @@ enum GameEvents
 	JUMP,
 	RETURN_HOME,
 	CURSOR_ON_INFO,
-	CURSOR_OFF_INFO
+	CURSOR_OFF_INFO,
+	LEVEL_START,
+	LEVEL_END
 };
 
 class GLASSHOUSE_API Events
@@ -92,6 +94,26 @@ public:
 	GameEnd() : Events(GAME_END)
 	{
 		std::cout << "GAME END\n";
+	}
+};
+
+class LevelStart : public Events
+{
+public:
+
+	LevelStart() : Events(LEVEL_START)
+	{
+		std::cout << "LEVEL START\n";
+	}
+};
+
+class LevelEnd : public Events
+{
+public:
+
+	LevelEnd() : Events(LEVEL_END)
+	{
+		std::cout << "LEVEL END\n";
 	}
 };
 
