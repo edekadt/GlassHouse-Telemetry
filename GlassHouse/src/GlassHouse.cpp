@@ -5,10 +5,10 @@
 
 std::unique_ptr<GlassHouse> GlassHouse::instance = nullptr;
 
-GlassHouse::GlassHouse()
+GlassHouse::GlassHouse(std::string directory)
 {
 	sessionID = std::hash<size_t>{}(std::time(0));
-	writerThread = new WriterThread(sessionID);
+	writerThread = new WriterThread(sessionID, directory);
 	writerThread->enqueue(new SessionStart(sessionID));
 }
 
@@ -19,9 +19,9 @@ GlassHouse::~GlassHouse()
 	delete writerThread;
 }
 
-bool GlassHouse::init()
+bool GlassHouse::init(std::string directory)
 {
-	instance.reset(new GlassHouse());
+	instance.reset(new GlassHouse(directory));
 	return true;
 }
 

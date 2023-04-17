@@ -8,10 +8,8 @@
 namespace fs = std::filesystem;
 
 
-WriterThread::WriterThread(size_t sessionID)
+WriterThread::WriterThread(size_t sessionID, std::string directory)
 {
-    std::string directory = "GlassHouse-data";
-
     if (!fs::is_directory(directory) || !fs::exists(directory)) { // Check if folder exists
         fs::create_directory(directory); // create folder
     }

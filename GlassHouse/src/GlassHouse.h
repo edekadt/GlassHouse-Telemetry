@@ -15,6 +15,7 @@
 
 #include <memory>
 #include <WriteDestinations.h>
+#include <string>
 
 class WriterThread;
 class Events;
@@ -26,7 +27,7 @@ public:
 	~GlassHouse();
 
 	// Initializes the singleton instance
-	static bool init();
+	static bool init(std::string directory = "GlassHouse-data");
 
 	// Closes the instance and frees memory
 	static bool close();
@@ -38,7 +39,7 @@ public:
 	void setWriteMode(WriteDestination mode_);
 
 protected:
-	GlassHouse();
+	GlassHouse(std::string directory);
 private:
 	static std::unique_ptr<GlassHouse> instance;
 

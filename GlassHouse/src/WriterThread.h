@@ -28,7 +28,7 @@ class Events;
 class GLASSHOUSE_API WriterThread
 {
 public:
-	WriterThread(size_t sessionID);
+	WriterThread(size_t sessionID, std::string directory);
 	~WriterThread() {};
 	void close();
 	void enqueue(Events* m);
