@@ -1,5 +1,5 @@
 #pragma once
-#ifndef WRITEDESTINATIONS
-#define WRITEDESTINATIONS
+#ifndef WRITEDESTINATIONS_H
+#define WRITEDESTINATIONS_H
 enum class WriteDestination { Local, Server };
-#endif // !WRITEDESTINATIONS
+#endif // !WRITEDESTINATIONS_H

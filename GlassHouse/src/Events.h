@@ -5,6 +5,11 @@
 #define GLASSHOUSE_API __declspec(dllimport)
 #endif
 
+#ifndef EXTEND_EVENT_DEFS
+#define EXTEND_EVENT_DEFS
+#endif 
+
+
 #include <string>
 #include <iostream>
 #include <nlohmann/json.hpp>
@@ -16,17 +21,9 @@ enum GameEvents
 	SESSION_END,
 	GAME_START,
 	GAME_END,
-	MOUSE_CLICK,
-	WOUND_START,
-	WOUND_END,
-	SHOOT,
-	HEAL,
-	JUMP,
-	RETURN_HOME,
-	CURSOR_ON_INFO,
-	CURSOR_OFF_INFO,
 	LEVEL_START,
-	LEVEL_END
+	LEVEL_END,
+	MOUSE_CLICK EXTEND_EVENT_DEFS
 };
 
 class GLASSHOUSE_API Events
