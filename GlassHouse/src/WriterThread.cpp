@@ -31,13 +31,14 @@ void WriterThread::writeFile(nlohmann::json& data)
 {
     try {
         std::ofstream output_file(filePath, std::ios::app);
-        std::string dump = data.dump();
+        std::string dump = data.dump(3);
         dump = dump.substr(1, dump.size() - 2);
 
-        output_file << dump << ",";
+        output_file << std::endl << "\t";
+        output_file << dump;
         output_file.close();
 
-        std::cout << "Los datos se han guardado correctamente en el archivo 'datos.json'" << std::endl;
+        std::cout << "Los datos se han guardado correctamente en el archivo " << filePath << std::endl;
     }
     catch (std::exception& e) {
         std::cerr << "Error al guardar los datos en el archivo JSON: " << e.what() << std::endl;
@@ -118,6 +119,21 @@ void WriterThread::enqueue(Events* e)
 	eventQueue.emplace(e);
 }
 
+void WriterThread::closeFile()
+{
+    try {
+        std::ofstream output_file(filePath, std::ios::app);
+
+        output_file << "\n\t]\n}";
+        output_file.close();
+
+        std::cout << "Los datos se han guardado correctamente en el archivo " << filePath << std::endl;
+    }
+    catch (std::exception& e) {
+        std::cerr << "Error al guardar los datos en el archivo JSON: " << e.what() << std::endl;
+    }
+}
+
 void WriterThread::setWriteMode(WriteDestination mode_)
 {
     mode = mode_;
@@ -132,6 +148,10 @@ void WriterThread::run()
         if (eventQueue.try_dequeue(event)) {
             data.push_back({ event->serializeToJSON() });
 
+            if (event->getType() == SESSION_START) {
+                writeString("{\n \"Events\": [");
+            }
+
             if (eventQueue.size_approx() >= EVENTS_LIMIT) {
                 write(data);
                 data.clear();
@@ -139,11 +159,27 @@ void WriterThread::run()
 
             if (event->getType() == SESSION_END) {
                 if (!data.empty()) write(data);
+                writeString("\n\t]\n}");
                 exit = true;
             }
             delete event;
         }
 	}
+}
+
+void WriterThread::writeString(std::string str)
+{
+    try {
+        std::ofstream output_file(filePath, std::ios::app);
+
+        output_file << str;
+        output_file.close();
+
+        std::cout << "Los datos se han guardado correctamente en el archivo " << filePath << std::endl;
+    }
+    catch (std::exception& e) {
+        std::cerr << "Error al guardar los datos en el archivo JSON: " << e.what() << std::endl;
+    }
 }
 
 void WriterThread::write(nlohmann::json& data)

@@ -11,6 +11,7 @@
 #else
 #define GLASSHOUSE_API __declspec(dllimport)
 #endif
+#include <string>
 #include <thread>
 #include <nlohmann/json.hpp>
 #include <readerwriterqueue.h>
@@ -31,6 +32,7 @@ public:
 	~WriterThread() {};
 	void close();
 	void enqueue(Events* m);
+	void closeFile();
 	void setWriteMode(WriteDestination mode_);
 
 private:
@@ -43,6 +45,7 @@ private:
 	WriteDestination mode = WriteDestination::Local;
 
 	void run();
+	void writeString(std::string str);
 	void write(nlohmann::json& data);
 	void writeFile(nlohmann::json& data);
 	void readFile();
