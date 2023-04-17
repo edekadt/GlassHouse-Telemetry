@@ -22,14 +22,23 @@ class Events;
 class GLASSHOUSE_API GlassHouse
 {
 public:
-	GlassHouse();
+	// Destructor should not be called directly, it is simply public for the purposes of unique_ptr
 	~GlassHouse();
 
+	// Initializes the singleton instance
 	static bool init();
+
+	// Closes the instance and frees memory
 	static bool close();
+	
+	// Queues an event to be serialized
 	static void enqueue(Events* m);
+
+	// Set write location of collected events (local file or server)
 	void setWriteMode(WriteDestination mode_);
 
+protected:
+	GlassHouse();
 private:
 	static std::unique_ptr<GlassHouse> instance;
 
