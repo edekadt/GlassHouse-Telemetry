@@ -63,3 +63,10 @@ nlohmann::json WoundStart::serializeToJSON() const override
 Events captured by the telemetry system are stored in a json file located by default in the folder GlassHouse-data, within the same directory as your solution. Each session generates a uniquely ID'd file containing all the events.
 
 To change the directory in which files are stored, pass the desired directory as an argument of GlassHouse::init().
+
+## Server
+To launch the testing server , go to .\Utils\TestServer folder, unzip the node_modules.zip then  run powershell and type the command.
+```bash
+node .\server.js
+#Or node .\Utils\TestServer\server.js if you are on solution dir
+```
