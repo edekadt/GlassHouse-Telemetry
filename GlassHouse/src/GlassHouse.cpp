@@ -38,10 +38,10 @@ void GlassHouse::enqueue(Events* m)
 
 void GlassHouse::setWriteMode(WriteDestination mode_)
 {
-	writerThread->setWriteMode(mode_);
+	instance.get()->writerThread->setWriteMode(mode_);
 }
 
 void GlassHouse::emergencyClose()
 {
-	writerThread->emergencyClose();
+	instance.get()->writerThread->emergencyClose();
 }

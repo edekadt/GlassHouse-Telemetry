@@ -36,10 +36,10 @@ public:
 	static void enqueue(Events* m);
 
 	// Set write location of collected events (local file or server)
-	void setWriteMode(WriteDestination mode_);
+	static void setWriteMode(WriteDestination mode_);
 
 	// Call in case of a captured exception to close off the file with the right format
-	void emergencyClose();
+	static void emergencyClose();
 
 protected:
 	GlassHouse(std::string directory);
