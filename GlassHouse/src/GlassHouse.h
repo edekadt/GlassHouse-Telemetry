@@ -38,6 +38,9 @@ public:
 	// Set write location of collected events (local file or server)
 	void setWriteMode(WriteDestination mode_);
 
+	// Call in case of a captured exception to close off the file with the right format
+	void emergencyClose();
+
 protected:
 	GlassHouse(std::string directory);
 private:

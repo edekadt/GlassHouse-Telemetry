@@ -34,6 +34,7 @@ public:
 	void enqueue(Events* m);
 	void closeFile();
 	void setWriteMode(WriteDestination mode_);
+	void emergencyClose();
 
 private:
 	bool exit = false;

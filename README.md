@@ -57,6 +57,8 @@ nlohmann::json WoundStart::serializeToJSON() const override
 }
 
 ```
+## Error Control
+If an exception causes your game to close before the SESSION_END event can be sent, you can call GlassHouse::emergencyClose() to seal off the json file with the correct syntax for it to be readable.
 
 ## Data
 
@@ -65,6 +67,8 @@ Events captured by the telemetry system are stored in a json file located by def
 To change the directory in which files are stored, pass the desired directory as an argument of GlassHouse::init().
 
 ## Server
+To store your data on a remote server instead of in a local file, use the GlassHouse::setWriteMode(...) function. To avoid splitting data between the two locations, this should be done immediately after initializing the library.
+
 To launch the testing server , go to .\Utils\TestServer folder, unzip the node_modules.zip then  run powershell and type the command.
 ```bash
 node .\server.js

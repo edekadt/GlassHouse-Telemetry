@@ -137,6 +137,13 @@ void WriterThread::setWriteMode(WriteDestination mode_)
     mode = mode_;
 }
 
+void WriterThread::emergencyClose()
+{
+    if (!data.empty()) write(data);
+    writeString("\n\t]\n}");
+    exit = true;
+}
+
 void WriterThread::run()
 {
 	while (!exit)

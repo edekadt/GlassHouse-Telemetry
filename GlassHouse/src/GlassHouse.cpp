@@ -40,3 +40,8 @@ void GlassHouse::setWriteMode(WriteDestination mode_)
 {
 	writerThread->setWriteMode(mode_);
 }
+
+void GlassHouse::emergencyClose()
+{
+	writerThread->emergencyClose();
+}
