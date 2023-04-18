@@ -1,5 +1,7 @@
 ## Setup
-### Clone the GlassHouse repository into your project root directory.
+### Clone the GlassHouse repository into your project root directory. We recommend adding the project as a git submodule using
+```git submodule add https://github.com/edekadt/GlassHouse-Telemetry GlassHouse-Telemetry```
+
 ### In your game's VS solution, open the Properties tab of your main project and follow these instructions: 
 Place the following two commands in the COMMAND LINE field of Build Events -> Post-Build Event:
 ```
@@ -65,6 +67,8 @@ If an exception causes your game to close before the SESSION_END event can be se
 Events captured by the telemetry system are stored in a json file located by default in the folder GlassHouse-data, within the same directory as your solution. Each session generates a uniquely ID'd file containing all the events.
 
 To change the directory in which files are stored, pass the desired directory as an argument of GlassHouse::init().
+
+We recommend excluding the folder you choose from your project's source code.
 
 ## Server
 To store your data on a remote server instead of in a local file, use the GlassHouse::setWriteMode(...) function. To avoid splitting data between the two locations, this should be done immediately after initializing the library.
