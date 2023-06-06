@@ -6,11 +6,6 @@
 #define INITIAL_QUEUE_SIZE 100
 #define EVENTS_LIMIT 25
 
-#ifdef GLASSHOUSE_EXPORTS
-#define GLASSHOUSE_API __declspec(dllexport)
-#else
-#define GLASSHOUSE_API __declspec(dllimport)
-#endif
 #include <string>
 #include <thread>
 #include <nlohmann/json.hpp>
@@ -25,7 +20,7 @@
 
 class Events;
 
-class GLASSHOUSE_API WriterThread
+class WriterThread
 {
 public:
 	WriterThread(size_t sessionID, std::string directory);

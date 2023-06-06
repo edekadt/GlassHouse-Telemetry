@@ -175,6 +175,9 @@
     <ClInclude Include="..\src\Events.h" />
     <ClInclude Include="..\src\framework.h" />
     <ClInclude Include="..\src\GlassHouse.h" />
+    <ClInclude Include="..\src\IEvent.h" />
+    <ClInclude Include="..\src\IPersistor.h" />
+    <ClInclude Include="..\src\ISerializer.h" />
     <ClInclude Include="..\src\pch.h" />
     <ClInclude Include="..\src\readerwriterqueue.h" />
     <ClInclude Include="..\src\WriteDestinations.h" />
@@ -184,6 +187,9 @@
     <ClCompile Include="..\src\dllmain.cpp" />
     <ClCompile Include="..\src\Events.cpp" />
     <ClCompile Include="..\src\GlassHouse.cpp" />
+    <ClCompile Include="..\src\IEvent.cpp" />
+    <ClCompile Include="..\src\IPersistor.cpp" />
+    <ClCompile Include="..\src\ISerializer.cpp" />
     <ClCompile Include="..\src\pch.cpp" />
     <ClCompile Include="..\src\WriterThread.cpp" />
   </ItemGroup>
