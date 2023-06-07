@@ -1,5 +1,5 @@
 // GlassHouse.h - Main interface class for external use of Glasshouse Telemetry functions
-// Simply boot the system at the start of your program with GlassHouse::init() and then close it at the end
+// Boot the system at the start of your program with GlassHouse::init() and then close it at the end
 // with GlassHouse::close()
 // 
 #pragma once
@@ -27,6 +27,7 @@ public:
 	~GlassHouse();
 
 	// Initializes the singleton instance
+	// TO DO: Error handling
 	static bool init(std::string directory = "GlassHouse-data");
 
 	// Closes the instance and frees memory
@@ -40,6 +41,12 @@ public:
 
 	// Call in case of a captured exception to close off the file with the right format
 	static void emergencyClose();
+
+	// Adds an event that will be queued every s seconds for as long as the system is running. Event is stored
+	// in a map under the key k and can be removed by calling removeRecurringEvent().
+	// Requires specifying tickrate
+	//static void addRecurringEvent();
+	//static void removeRecurringEvent();
 
 protected:
 	GlassHouse(std::string directory);

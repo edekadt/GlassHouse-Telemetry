@@ -5,13 +5,19 @@
 #define GLASSHOUSE_API __declspec(dllimport)
 #endif
 
+class ISerializer;
+
 class GLASSHOUSE_API IPersistor
 {
 protected:
-	IPersistor() {};
+	ISerializer* serializer;
+
+	IPersistor(ISerializer* serializer_): serializer(serializer_) {};
 	
-	~IPersistor() {};
+	~IPersistor() { serializer = nullptr; };
+
+	virtual void persist() const = 0;
 
 public:
-	virtual bool write() = 0;	// returns 1 on successful persistence
+	virtual bool write() const;	// returns 1 on successful persistence
 };

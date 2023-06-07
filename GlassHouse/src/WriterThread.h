@@ -8,22 +8,17 @@
 
 #include <string>
 #include <thread>
-#include <nlohmann/json.hpp>
 #include <readerwriterqueue.h>
 #include <WriteDestinations.h>
 
-/*static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp)
-{
-	((std::string*)userp)->append((char*)contents, size * nmemb);
-	return size * nmemb;
-}*/
-
 class Events;
+class ISerializer;
+class IPersistor;
 
 class WriterThread
 {
 public:
-	WriterThread(size_t sessionID, std::string directory);
+	WriterThread(size_t sessionID, IPersistor* persistor_, ISerializer* serializer_);
 	~WriterThread() {};
 	void close();
 	void enqueue(Events* m);

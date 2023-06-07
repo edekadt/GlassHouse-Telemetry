@@ -1,22 +1,23 @@
 #include <pch.h> // use stdafx.h in Visual Studio 2017 and earlier
 #include <WriterThread.h>
-#include <iostream>
-#include <fstream>
-#include <curl/curl.h>
 #include <Events.h>
-#include <filesystem>
+#include <IPersistor.h>
+#include <ISerializer.h>
 namespace fs = std::filesystem;
 
 
-WriterThread::WriterThread(size_t sessionID, std::string directory)
+WriterThread::WriterThread(size_t sessionID, IPersistor* persistor_, ISerializer* serializer_)
 {
-    if (!fs::is_directory(directory) || !fs::exists(directory)) { // Check if folder exists
+    // Move to persistor and serializer
+
+    /*if (!fs::is_directory(directory) || !fs::exists(directory)) { // Check if folder exists
         fs::create_directory(directory); // create folder
     }
     serverUrl = "http://localhost:3000/data";
     filePath = directory + "/GH_session_" + std::to_string(sessionID) + ".json";
+    data = {};*/
+
 	eventQueue = moodycamel::ReaderWriterQueue<Events*>(INITIAL_QUEUE_SIZE);
-    data = {};
 	thread = std::thread(&WriterThread::run, this);
 }
 
