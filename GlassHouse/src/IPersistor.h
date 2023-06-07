@@ -5,7 +5,10 @@
 #define GLASSHOUSE_API __declspec(dllimport)
 #endif
 
+#include <vector>
+
 class ISerializer;
+class Event;
 
 class GLASSHOUSE_API IPersistor
 {
@@ -16,8 +19,10 @@ protected:
 	
 	~IPersistor() { serializer = nullptr; };
 
-	virtual void persist() const = 0;
+	virtual void persist(const std::string& s) const = 0;
 
 public:
-	virtual bool write() const;	// returns 1 on successful persistence
+	virtual void begin() {};	// Write file start
+	virtual void end() {};		// Write file ending
+	bool write(std::vector<Event*> events) const;	// Returns true on successful persistence
 };

@@ -26,35 +26,35 @@ enum GameEvents
 	MOUSE_CLICK EXTEND_EVENT_DEFS
 };
 
-class GLASSHOUSE_API Events
+class GLASSHOUSE_API Event
 {
 protected:
 
 	int time;
 	GameEvents gameEvent;
 
-	Events(GameEvents event) : gameEvent(event) {
+	Event(GameEvents event) : gameEvent(event) {
 		time = std::time(0);
 	}
 
 public:
 
-	Events() {};
+	Event() {};
 
-	~Events() {};
+	~Event() {};
 
 	virtual nlohmann::json serializeToJSON() const;
 
 	GameEvents getType() const { return gameEvent; }
 
-	void releaseEvent(const Events* event) { delete event; }
+	void releaseEvent(const Event* event) { delete event; }
 };
 
-class SessionStart : public Events
+class SessionStart : public Event
 {
 public:
 
-	SessionStart(size_t sessionID_) : Events(SESSION_START), sessionID(sessionID_)
+	SessionStart(size_t sessionID_) : Event(SESSION_START), sessionID(sessionID_)
 	{
 		std::cout << "START OF SESSION " << sessionID << "\n";
 	}
@@ -62,11 +62,11 @@ private:
 	size_t sessionID;
 };
 
-class SessionEnd : public Events
+class SessionEnd : public Event
 {
 public:
 
-	SessionEnd(size_t sessionID_) : Events(SESSION_END), sessionID(sessionID_)
+	SessionEnd(size_t sessionID_) : Event(SESSION_END), sessionID(sessionID_)
 	{
 		std::cout << "END OF SESSION " << sessionID << "\n";
 	}
@@ -74,47 +74,47 @@ private:
 	size_t sessionID;
 };
 
-class GameStart : public Events
+class GameStart : public Event
 {
 public:
 
-	GameStart() : Events(GAME_START) 
+	GameStart() : Event(GAME_START) 
 	{
 		std::cout << "GAME START\n"; 
 	}
 };
 
-class GameEnd : public Events
+class GameEnd : public Event
 {
 public: 
 
-	GameEnd() : Events(GAME_END)
+	GameEnd() : Event(GAME_END)
 	{
 		std::cout << "GAME END\n";
 	}
 };
 
-class LevelStart : public Events
+class LevelStart : public Event
 {
 public:
 
-	LevelStart() : Events(LEVEL_START)
+	LevelStart() : Event(LEVEL_START)
 	{
 		std::cout << "LEVEL START\n";
 	}
 };
 
-class LevelEnd : public Events
+class LevelEnd : public Event
 {
 public:
 
-	LevelEnd() : Events(LEVEL_END)
+	LevelEnd() : Event(LEVEL_END)
 	{
 		std::cout << "LEVEL END\n";
 	}
 };
 
-class MouseClick : public Events 
+class MouseClick : public Event 
 {
 protected:
 
@@ -122,7 +122,7 @@ protected:
 
 public:
 
-	MouseClick() : Events(MOUSE_CLICK) 
+	MouseClick() : Event(MOUSE_CLICK) 
 	{
 		mousePos = { 0, 0 }; 
 

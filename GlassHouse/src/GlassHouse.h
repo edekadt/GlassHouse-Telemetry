@@ -18,7 +18,7 @@
 #include <string>
 
 class WriterThread;
-class Events;
+class Event;
 
 class GLASSHOUSE_API GlassHouse
 {
@@ -34,7 +34,7 @@ public:
 	static bool close();
 	
 	// Queues an event to be serialized
-	static void enqueue(Events* m);
+	static void enqueue(Event* m);
 
 	// Set write location of collected events (local file or server)
 	static void setWriteMode(WriteDestination mode_);

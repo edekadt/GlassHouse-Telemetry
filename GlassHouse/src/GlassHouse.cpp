@@ -31,7 +31,7 @@ bool GlassHouse::close()
 	return true;
 }
 
-void GlassHouse::enqueue(Events* m)
+void GlassHouse::enqueue(Event* m)
 {
 	instance.get()->writerThread->enqueue(m);
 }

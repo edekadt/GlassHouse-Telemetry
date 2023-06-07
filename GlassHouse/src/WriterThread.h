@@ -11,7 +11,7 @@
 #include <readerwriterqueue.h>
 #include <WriteDestinations.h>
 
-class Events;
+class Event;
 class ISerializer;
 class IPersistor;
 
@@ -21,7 +21,7 @@ public:
 	WriterThread(size_t sessionID, IPersistor* persistor_, ISerializer* serializer_);
 	~WriterThread() {};
 	void close();
-	void enqueue(Events* m);
+	void enqueue(Event* m);
 	void closeFile();
 	void setWriteMode(WriteDestination mode_);
 	void emergencyClose();
@@ -29,7 +29,7 @@ public:
 private:
 	bool exit = false;
 	std::thread thread;
-	moodycamel::ReaderWriterQueue<Events*> eventQueue;
+	moodycamel::ReaderWriterQueue<Event*> eventQueue;
 	nlohmann::json data;
 	std::string serverUrl;
 	std::string filePath;

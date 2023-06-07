@@ -1,6 +1,6 @@
 #include <pch.h> // use stdafx.h in Visual Studio 2017 and earlier
 #include <WriterThread.h>
-#include <Events.h>
+#include <Event.h>
 #include <IPersistor.h>
 #include <ISerializer.h>
 namespace fs = std::filesystem;
@@ -17,7 +17,7 @@ WriterThread::WriterThread(size_t sessionID, IPersistor* persistor_, ISerializer
     filePath = directory + "/GH_session_" + std::to_string(sessionID) + ".json";
     data = {};*/
 
-	eventQueue = moodycamel::ReaderWriterQueue<Events*>(INITIAL_QUEUE_SIZE);
+	eventQueue = moodycamel::ReaderWriterQueue<Event*>(INITIAL_QUEUE_SIZE);
 	thread = std::thread(&WriterThread::run, this);
 }
 
@@ -111,7 +111,7 @@ void WriterThread::readServer()
     std::cout << response;
 }
 
-void WriterThread::enqueue(Events* e)
+void WriterThread::enqueue(Event* e)
 {
 	// We use emplace instead of try_emplace because try_emplace doesn't allocate additional memory if needed.
 	// That would do if we didn't want to excede a fixed number of events.
@@ -149,7 +149,7 @@ void WriterThread::run()
 {
 	while (!exit)
 	{
-		Events* event;
+		Event* event;
         
         if (eventQueue.try_dequeue(event)) {
             data.push_back({ event->serializeToJSON() });
