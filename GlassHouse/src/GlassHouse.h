@@ -42,7 +42,7 @@ public:
 	// Call in case of a captured exception to close off the file with the right format
 	static void emergencyClose();
 
-	// Adds an event that will be queued every s seconds for as long as the system is running. Event is stored
+	// TO DO: Adds an event that will be queued every s seconds for as long as the system is running. Event is stored
 	// in a map under the key k and can be removed by calling removeRecurringEvent().
 	// Requires specifying tickrate
 	//static void addRecurringEvent();

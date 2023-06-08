@@ -15,7 +15,7 @@
 #include <nlohmann/json.hpp>
 #include <ctime>
 
-enum GameEvents
+enum EventIdentifier
 {
 	SESSION_START,
 	SESSION_END,
@@ -31,9 +31,9 @@ class GLASSHOUSE_API Event
 protected:
 
 	int time;
-	GameEvents gameEvent;
+	EventIdentifier id;
 
-	Event(GameEvents event) : gameEvent(event) {
+	Event(EventIdentifier event) : id(event) {
 		time = std::time(0);
 	}
 
@@ -45,7 +45,7 @@ public:
 
 	virtual nlohmann::json serializeToJSON() const;
 
-	GameEvents getType() const { return gameEvent; }
+	EventIdentifier getType() const { return id; }
 
 	void releaseEvent(const Event* event) { delete event; }
 };

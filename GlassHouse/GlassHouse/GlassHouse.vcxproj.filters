@@ -33,7 +33,7 @@
     <ClInclude Include="..\src\WriterThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Events.h">
+    <ClInclude Include="..\src\Event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\WriteDestinations.h">
@@ -62,7 +62,7 @@
     <ClCompile Include="..\src\WriterThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Events.cpp">
+    <ClCompile Include="..\src\Event.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\IEvent.cpp">

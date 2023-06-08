@@ -3,7 +3,7 @@
 nlohmann::json Event::serializeToJSON() const
 {
 	nlohmann::json data = {
-            {"Event", std::to_string(gameEvent)},
+            {"Event", std::to_string(id)},
             {"Time", time}
     };
 

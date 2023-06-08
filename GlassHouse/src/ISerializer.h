@@ -12,18 +12,20 @@ class GLASSHOUSE_API ISerializer
 {
 protected:
 
-	ISerializer(): fileFormat(""), openingString(""), closingString("") {};
+	ISerializer(): fileFormat(""), openingString(""), separator(""), closingString("") {};
 
 	~ISerializer() {};
 
 	std::string fileFormat;
 	std::string openingString;
+	std::string separator;
 	std::string closingString;
 
 public:
 
 	inline std::string getFileFormat() const { return fileFormat; };	// Returns the file extension for the format, including the '.'
-	inline std::string getOpeningString() const { return ""; };		// Used by formats that require special file beginnings
-	inline std::string getClosingString() const { return ""; };		// Used by formats that require special file end signifiers
-	virtual void serialize(const Event& event, std::string& serializable) const = 0;	// Serialize single element
+	inline std::string getOpeningString() const { return openingString; };		// Used by formats that require special file beginnings
+	inline std::string getSeparator() const { return separator; };				// Character string that separates two serialized events
+	inline std::string getClosingString() const { return closingString; };		// Used by formats that require special file end signifiers
+	virtual void serialize(const Event& event, std::string& serializable) const = 0;	// Returns a single element serialized as a string
 };

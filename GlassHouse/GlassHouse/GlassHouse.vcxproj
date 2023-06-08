@@ -172,7 +172,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\src\atomicops.h" />
-    <ClInclude Include="..\src\Events.h" />
+    <ClInclude Include="..\src\Event.h" />
     <ClInclude Include="..\src\framework.h" />
     <ClInclude Include="..\src\GlassHouse.h" />
     <ClInclude Include="..\src\IEvent.h" />
@@ -185,7 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\dllmain.cpp" />
-    <ClCompile Include="..\src\Events.cpp" />
+    <ClCompile Include="..\src\Event.cpp" />
     <ClCompile Include="..\src\GlassHouse.cpp" />
     <ClCompile Include="..\src\IEvent.cpp" />
     <ClCompile Include="..\src\IPersistor.cpp" />
