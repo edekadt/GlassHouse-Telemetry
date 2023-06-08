@@ -9,11 +9,11 @@
 #define EXTEND_EVENT_DEFS
 #endif 
 
-
 #include <string>
+#include <unordered_map>
 #include <iostream>
-#include <nlohmann/json.hpp>
 #include <ctime>
+#include <Serializable.h>
 
 enum EventIdentifier
 {
@@ -32,6 +32,7 @@ protected:
 
 	int time;
 	EventIdentifier id;
+	std::unordered_map<std::string, Serializable*> content;
 
 	Event(EventIdentifier event) : id(event) {
 		time = std::time(0);
@@ -39,11 +40,13 @@ protected:
 
 public:
 
-	Event() {};
+	Event();
 
-	~Event() {};
+	~Event();
 
-	virtual nlohmann::json serializeToJSON() const;
+	Event add(std::string key, int32_t val);
+	Event add(std::string key, double val);
+	Event add(std::string key, std::string val);
 
 	EventIdentifier getType() const { return id; }
 

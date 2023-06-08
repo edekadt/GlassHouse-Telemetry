@@ -173,24 +173,30 @@
   <ItemGroup>
     <ClInclude Include="..\src\atomicops.h" />
     <ClInclude Include="..\src\Event.h" />
+    <ClInclude Include="..\src\FilePersistor.h" />
     <ClInclude Include="..\src\framework.h" />
     <ClInclude Include="..\src\GlassHouse.h" />
-    <ClInclude Include="..\src\IEvent.h" />
     <ClInclude Include="..\src\IPersistor.h" />
     <ClInclude Include="..\src\ISerializer.h" />
+    <ClInclude Include="..\src\JsonSerializer.h" />
     <ClInclude Include="..\src\pch.h" />
     <ClInclude Include="..\src\readerwriterqueue.h" />
+    <ClInclude Include="..\src\Serializable.h" />
+    <ClInclude Include="..\src\ServerPersistor.h" />
     <ClInclude Include="..\src\WriteDestinations.h" />
     <ClInclude Include="..\src\WriterThread.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\dllmain.cpp" />
     <ClCompile Include="..\src\Event.cpp" />
+    <ClCompile Include="..\src\FilePersistor.cpp" />
     <ClCompile Include="..\src\GlassHouse.cpp" />
-    <ClCompile Include="..\src\IEvent.cpp" />
     <ClCompile Include="..\src\IPersistor.cpp" />
     <ClCompile Include="..\src\ISerializer.cpp" />
+    <ClCompile Include="..\src\JsonSerializer.cpp" />
     <ClCompile Include="..\src\pch.cpp" />
+    <ClCompile Include="..\src\Serializable.cpp" />
+    <ClCompile Include="..\src\ServerPersistor.cpp" />
     <ClCompile Include="..\src\WriterThread.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
