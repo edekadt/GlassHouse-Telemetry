@@ -44,6 +44,7 @@ public:
 
 	~Event();
 
+	Event add(std::string key, size_t val);
 	Event add(std::string key, int32_t val);
 	Event add(std::string key, double val);
 	Event add(std::string key, std::string val);
@@ -57,12 +58,10 @@ class SessionStart : public Event
 {
 public:
 
-	SessionStart(size_t sessionID_) : Event(SESSION_START), sessionID(sessionID_)
+	SessionStart(size_t sessionID_) : Event(SESSION_START)
 	{
-		std::cout << "START OF SESSION " << sessionID << "\n";
+		add("SessionID", sessionID_);
 	}
-private:
-	size_t sessionID;
 };
 
 class SessionEnd : public Event

@@ -2,8 +2,9 @@
 #include <ISerializer.h>
 #include <string>
 
-bool IPersistor::write(std::vector<Event*> events) const
+bool IPersistor::write(std::vector<Event*> events)
 {
+	open();
 	std::string formattedString;
 	for (Event* e : events)
 	{
@@ -12,5 +13,6 @@ bool IPersistor::write(std::vector<Event*> events) const
 		formattedString.append(s);
 	}
 	persist(formattedString);
+	close();
 	return true;
 }

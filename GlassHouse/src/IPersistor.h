@@ -19,10 +19,13 @@ protected:
 	
 	~IPersistor() { serializer = nullptr; };
 
-	virtual void persist(const std::string& s) const = 0;
+	virtual void persist(const std::string& s) = 0;
 
 public:
+	// TO DO: configurable rate of writing (by time or by number of events)
 	virtual void begin() {};	// Write file start
 	virtual void end() {};		// Write file ending
-	bool write(std::vector<Event*> events) const;	// Returns true on successful persistence
+	virtual void open() {};		// Open file/connect to server/etc before flushing queue
+	virtual void close() {};	// Close file/end server connection/etc after flushing queue
+	bool write(std::vector<Event*> events);	// Returns true on successful persistence
 };

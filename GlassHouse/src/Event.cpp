@@ -14,6 +14,12 @@ Event::~Event()
     }
 }
 
+Event Event::add(std::string key, size_t val)
+{
+    content.insert({ key, new Serializable(val) });
+    return *this;
+}
+
 Event Event::add(std::string key, int32_t val)
 {
     content.insert({ key, new Serializable(val) });
