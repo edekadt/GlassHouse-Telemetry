@@ -38,6 +38,12 @@ Event Event::add(std::string key, std::string val)
     return *this;
 }
 
+Event Event::add(std::string key, bool val)
+{
+    content.insert({ key, new Serializable(val) });
+    return *this;
+}
+
 nlohmann::json Event::serializeToJSON() const
 {
 	nlohmann::json data = {

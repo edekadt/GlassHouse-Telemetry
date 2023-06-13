@@ -48,6 +48,7 @@ public:
 	Event add(std::string key, int32_t val);
 	Event add(std::string key, double val);
 	Event add(std::string key, std::string val);
+	Event add(std::string key, bool val);
 
 	EventIdentifier getType() const { return id; }
 
