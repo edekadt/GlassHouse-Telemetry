@@ -16,6 +16,8 @@ std::string Serializable::toString()
 		return std::to_string(i);
 	case validValue::D:
 		return std::to_string(d);
+	case validValue::B:
+		return std::to_string(b);
 	case validValue::S:
 		return s;
 	}
