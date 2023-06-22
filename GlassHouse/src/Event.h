@@ -29,13 +29,12 @@ enum EventIdentifier
 class GLASSHOUSE_API Event
 {
 protected:
-
-	int time;
 	EventIdentifier id;
 	std::unordered_map<std::string, Serializable*> content;
 
 	Event(EventIdentifier event) : id(event) {
-		time = std::time(0);
+		int time = std::time(0);
+		add("Time", time);
 	}
 
 public:
@@ -51,6 +50,7 @@ public:
 	Event add(std::string key, bool val);
 
 	EventIdentifier getType() const { return id; }
+	const std::unordered_map<std::string, Serializable*>& getContent() const { return content; }
 
 	void releaseEvent(const Event* event) { delete event; }
 };
