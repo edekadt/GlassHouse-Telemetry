@@ -22,8 +22,7 @@ enum EventIdentifier
 	GAME_START,
 	GAME_END,
 	LEVEL_START,
-	LEVEL_END,
-	MOUSE_CLICK EXTEND_EVENT_DEFS
+	LEVEL_END EXTEND_EVENT_DEFS
 };
 
 class GLASSHOUSE_API Event
@@ -68,22 +67,19 @@ public:
 class SessionEnd : public Event
 {
 public:
-
-	SessionEnd(size_t sessionID_) : Event(SESSION_END), sessionID(sessionID_)
+	SessionEnd(size_t sessionID_) : Event(SESSION_END)
 	{
-		std::cout << "END OF SESSION " << sessionID << "\n";
+		add("SessionID", sessionID_);
 	}
-private:
-	size_t sessionID;
 };
 
 class GameStart : public Event
 {
 public:
 
-	GameStart() : Event(GAME_START) 
+	GameStart(int32_t gameID_) : Event(GAME_START) 
 	{
-		std::cout << "GAME START\n"; 
+		add("GameID", gameID_);
 	}
 };
 
@@ -91,9 +87,9 @@ class GameEnd : public Event
 {
 public: 
 
-	GameEnd() : Event(GAME_END)
+	GameEnd(int32_t gameID_) : Event(GAME_END)
 	{
-		std::cout << "GAME END\n";
+		add("GameID", gameID_);
 	}
 };
 
@@ -101,9 +97,9 @@ class LevelStart : public Event
 {
 public:
 
-	LevelStart() : Event(LEVEL_START)
+	LevelStart(int32_t levelID_) : Event(LEVEL_START)
 	{
-		std::cout << "LEVEL START\n";
+		add("LevelID", levelID_);
 	}
 };
 
@@ -111,31 +107,8 @@ class LevelEnd : public Event
 {
 public:
 
-	LevelEnd() : Event(LEVEL_END)
+	LevelEnd(int32_t levelID_) : Event(LEVEL_END)
 	{
-		std::cout << "LEVEL END\n";
+		add("LevelID", levelID_);
 	}
 };
-
-class MouseClick : public Event 
-{
-protected:
-
-	std::pair<int, int> mousePos;	
-
-public:
-
-	MouseClick() : Event(MOUSE_CLICK) 
-	{
-		mousePos = { 0, 0 }; 
-
-		std::cout << "MOUSE CLICK on X " + mousePos.first;
-		std::cout << " and on Y " + mousePos.second;
-		std::cout << "\n"; 
-	}
-
-	void setMousePos(std::pair<int, int> pos) { mousePos = pos; }
-
-	nlohmann::json serializeToJSON() const;
-};
-
