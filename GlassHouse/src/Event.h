@@ -87,7 +87,7 @@ class LevelStart : public Event
 {
 public:
 
-	LevelStart(int32_t levelID_) : Event("LEVEL_START")
+	LevelStart(std::string levelID_) : Event("LEVEL_START")
 	{
 		add("LevelID", levelID_);
 	}
@@ -97,7 +97,7 @@ class LevelEnd : public Event
 {
 public:
 
-	LevelEnd(int32_t levelID_) : Event("LEVEL_END")
+	LevelEnd(std::string levelID_) : Event("LEVEL_END")
 	{
 		add("LevelID", levelID_);
 	}
