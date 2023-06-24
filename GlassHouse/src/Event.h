@@ -15,23 +15,13 @@
 #include <ctime>
 #include <Serializable.h>
 
-enum EventIdentifier
-{
-	SESSION_START,
-	SESSION_END,
-	GAME_START,
-	GAME_END,
-	LEVEL_START,
-	LEVEL_END EXTEND_EVENT_DEFS
-};
-
 class GLASSHOUSE_API Event
 {
 protected:
-	EventIdentifier id;
+	std::string id;
 	std::unordered_map<std::string, Serializable*> content;
 
-	Event(EventIdentifier event) : id(event) {
+	Event(std::string event) : id(event) {
 		int time = std::time(0);
 		add("Time", time);
 	}
@@ -48,7 +38,7 @@ public:
 	Event add(std::string key, std::string val);
 	Event add(std::string key, bool val);
 
-	EventIdentifier getType() const { return id; }
+	std::string getType() const { return id; }
 	const std::unordered_map<std::string, Serializable*>& getContent() const { return content; }
 
 	void releaseEvent(const Event* event) { delete event; }
@@ -58,7 +48,7 @@ class SessionStart : public Event
 {
 public:
 
-	SessionStart(size_t sessionID_) : Event(SESSION_START)
+	SessionStart(size_t sessionID_) : Event("SESSION_START")
 	{
 		add("SessionID", sessionID_);
 	}
@@ -67,7 +57,7 @@ public:
 class SessionEnd : public Event
 {
 public:
-	SessionEnd(size_t sessionID_) : Event(SESSION_END)
+	SessionEnd(size_t sessionID_) : Event("SESSION_END")
 	{
 		add("SessionID", sessionID_);
 	}
@@ -77,7 +67,7 @@ class GameStart : public Event
 {
 public:
 
-	GameStart(int32_t gameID_) : Event(GAME_START) 
+	GameStart(int32_t gameID_) : Event("GAME_START")
 	{
 		add("GameID", gameID_);
 	}
@@ -87,7 +77,7 @@ class GameEnd : public Event
 {
 public: 
 
-	GameEnd(int32_t gameID_) : Event(GAME_END)
+	GameEnd(int32_t gameID_) : Event("GAME_END")
 	{
 		add("GameID", gameID_);
 	}
@@ -97,7 +87,7 @@ class LevelStart : public Event
 {
 public:
 
-	LevelStart(int32_t levelID_) : Event(LEVEL_START)
+	LevelStart(int32_t levelID_) : Event("LEVEL_START")
 	{
 		add("LevelID", levelID_);
 	}
@@ -107,7 +97,7 @@ class LevelEnd : public Event
 {
 public:
 
-	LevelEnd(int32_t levelID_) : Event(LEVEL_END)
+	LevelEnd(int32_t levelID_) : Event("LEVEL_END")
 	{
 		add("LevelID", levelID_);
 	}
