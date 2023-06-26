@@ -26,7 +26,6 @@ public:
 
 private:
 	bool exit = false;
-	std::string stringToWrite;
 
 	IPersistor* persistor;
 	ISerializer* serializer;
