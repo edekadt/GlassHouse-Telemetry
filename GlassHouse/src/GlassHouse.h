@@ -36,9 +36,6 @@ public:
 	// Queues an event to be serialized
 	static void enqueue(Event* m);
 
-	// Set write location of collected events (local file or server)
-	static void setWriteMode(WriteDestination mode_);
-
 	// Call in case of a captured exception to close off the file with the right format
 	static void emergencyClose();
 

@@ -17,6 +17,10 @@ WriterThread::WriterThread(size_t sessionID, IPersistor* persistor_, ISerializer
     filePath = directory + "/GH_session_" + std::to_string(sessionID) + ".json";
     data = {};*/
 
+    session_ID = sessionID;
+    persistor = persistor_;
+    serializer = serializer_;
+
 	eventQueue = moodycamel::ReaderWriterQueue<Event*>(INITIAL_QUEUE_SIZE);
 	thread = std::thread(&WriterThread::run, this);
 }
@@ -26,91 +30,6 @@ void WriterThread::close()
 	thread.join();
 }
 
-void WriterThread::writeFile(nlohmann::json& data)
-{
-    try {
-        std::ofstream output_file(filePath, std::ios::app);
-        std::string dump = data.dump(3);
-        dump = dump.substr(1, dump.size() - 2);
-
-        output_file << std::endl << "\t";
-        output_file << dump;
-        output_file.close();
-
-        std::cout << "Los datos se han guardado correctamente en el archivo " << filePath << std::endl;
-    }
-    catch (std::exception& e) {
-        std::cerr << "Error al guardar los datos en el archivo JSON: " << e.what() << std::endl;
-    }
-}
-
-void WriterThread::readFile()
-{
-    std::ifstream input_file(filePath);
-    nlohmann::json data;
-    if (input_file.is_open()) {
-        input_file >> data;
-    }
-    std::cout << data;
-}
-
-void WriterThread::writeServer(nlohmann::json& data, std::string sever)
-{
-    CURL* server = curl_easy_init();
-    std::string json_data = data.dump();
-    try
-    {
-        if (server) {
-            curl_easy_setopt(server, CURLOPT_URL, sever.c_str());
-            curl_easy_setopt(server, CURLOPT_POST, 1L);
-            struct curl_slist* headers = NULL;
-            headers = curl_slist_append(headers, "Content-Type: application/json");
-            curl_easy_setopt(server, CURLOPT_HTTPHEADER, headers);
-            curl_easy_setopt(server, CURLOPT_POSTFIELDS, json_data.c_str());
-
-            CURLcode res = curl_easy_perform(server);
-            if (res != CURLE_OK) {
-                std::cerr << "Error al enviar los datos al servidor: " << curl_easy_strerror(res) << std::endl;
-            }
-            else {
-                std::cout << "Datos enviados correctamente al servidor." << std::endl;
-            }
-
-            curl_easy_cleanup(server);
-            curl_slist_free_all(headers);
-        }
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << "Error al abrir servidor: " << e.what() << std::endl;
-    }
-}
-
-void WriterThread::readServer()
-{
-    nlohmann::json response_json;
-    std::string response;
-    CURL* server = curl_easy_init();
-    if (server) {
-        curl_easy_setopt(server, CURLOPT_URL, serverUrl.c_str());
-        struct curl_slist* headers = NULL; 
-        //headers = curl_slist_append(headers, "Accept: text/html");
-        //headers = curl_slist_append(headers, "Accept: application/json");
-        //headers = curl_slist_append(headers, "Content-Type: application/json");
-        curl_easy_setopt(server, CURLOPT_FOLLOWLOCATION, 1L);
-        //curl_easy_setopt(server, CURLOPT_WRITEFUNCTION, WriteCallback);
-        curl_easy_setopt(server, CURLOPT_WRITEDATA, &response);
-        curl_easy_setopt(server, CURLOPT_VERBOSE, 1L);
-        CURLcode res = curl_easy_perform(server);
-        if (res != CURLE_OK) {
-            std::cout << "Error al enviar la solicitud: " << curl_easy_strerror(res) << std::endl;
-        }
-        curl_easy_cleanup(server);
-        curl_slist_free_all(headers);
-    }
-    std::cout << response;
-}
-
 void WriterThread::enqueue(Event* e)
 {
 	// We use emplace instead of try_emplace because try_emplace doesn't allocate additional memory if needed.
@@ -118,85 +37,31 @@ void WriterThread::enqueue(Event* e)
 	eventQueue.emplace(e);
 }
 
-void WriterThread::closeFile()
-{
-    try {
-        std::ofstream output_file(filePath, std::ios::app);
-
-        output_file << "\n\t]\n}";
-        output_file.close();
-
-        std::cout << "Los datos se han guardado correctamente en el archivo " << filePath << std::endl;
-    }
-    catch (std::exception& e) {
-        std::cerr << "Error al guardar los datos en el archivo JSON: " << e.what() << std::endl;
-    }
-}
-
-void WriterThread::setWriteMode(WriteDestination mode_)
-{
-    mode = mode_;
-}
-
 void WriterThread::emergencyClose()
 {
-    if (!data.empty()) write(data);
-    writeString("\n\t]\n}");
     exit = true;
 }
 
 void WriterThread::run()
 {
+    persistor->open();
+
+    Event* event;
+
 	while (!exit)
 	{
-		Event* event;
-        
-        if (eventQueue.try_dequeue(event)) {
-            data.push_back({ event->serializeToJSON() });
-
-            if (event->getType() == SESSION_START) {
-                writeString("{\n \"Events\": [");
-            }
-
-            if (eventQueue.size_approx() >= EVENTS_LIMIT) {
-                write(data);
-                data.clear();
-            }
-
-            if (event->getType() == SESSION_END) {
-                if (!data.empty()) write(data);
-                writeString("\n\t]\n}");
-                exit = true;
-            }
+        while (eventQueue.try_dequeue(event)) {
+            persistor->write(event);
             delete event;
         }
+
+        Sleep(EVENT_THREAD_TIME);
 	}
-}
 
-void WriterThread::writeString(std::string str)
-{
-    try {
-        std::ofstream output_file(filePath, std::ios::app);
-
-        output_file << str;
-        output_file.close();
-
-        std::cout << "Los datos se han guardado correctamente en el archivo " << filePath << std::endl;
+    while (eventQueue.try_dequeue(event)) {
+        persistor->write(event);
+        delete event;
     }
-    catch (std::exception& e) {
-        std::cerr << "Error al guardar los datos en el archivo JSON: " << e.what() << std::endl;
-    }
-}
 
-void WriterThread::write(nlohmann::json& data)
-{
-    switch (mode)
-    {
-    case WriteDestination::Local:
-        writeFile(data);
-        break;
-    case WriteDestination::Server:
-        writeServer(data, serverUrl);
-        break;
-    }
+    persistor->close();
 }

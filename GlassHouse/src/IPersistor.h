@@ -27,5 +27,5 @@ public:
 	virtual void end() {};		// Write file ending
 	virtual void open() {};		// Open file/connect to server/etc before flushing queue
 	virtual void close() {};	// Close file/end server connection/etc after flushing queue
-	bool write(std::vector<Event*> events);	// Returns true on successful persistence
+	bool write(Event* events);	// Returns true on successful persistence
 };

@@ -2,17 +2,11 @@
 #include <ISerializer.h>
 #include <string>
 
-bool IPersistor::write(std::vector<Event*> events)
+bool IPersistor::write(Event* event)
 {
-	open();
-	std::string formattedString;
-	for (Event* e : events)
-	{
-		std::string s = "";
-		serializer->serialize(*e, s);
-		formattedString.append(s);
-	}
+	std::string formattedString = "";
+	serializer->serialize(*event, formattedString);
+
 	persist(formattedString);
-	close();
 	return true;
 }

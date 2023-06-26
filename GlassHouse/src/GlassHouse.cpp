@@ -1,7 +1,7 @@
 #include <pch.h> // use stdafx.h in Visual Studio 2017 and earlier
 #include <GlassHouse.h>
 #include <WriterThread.h>
-#include <Events.h>
+#include <Event.h>
 
 std::unique_ptr<GlassHouse> GlassHouse::instance = nullptr;
 
@@ -34,11 +34,6 @@ bool GlassHouse::close()
 void GlassHouse::enqueue(Event* m)
 {
 	instance.get()->writerThread->enqueue(m);
-}
-
-void GlassHouse::setWriteMode(WriteDestination mode_)
-{
-	instance.get()->writerThread->setWriteMode(mode_);
 }
 
 void GlassHouse::emergencyClose()
