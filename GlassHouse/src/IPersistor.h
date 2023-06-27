@@ -20,7 +20,7 @@ protected:
 	~IPersistor() { serializer = nullptr; };
 
 	virtual void persist(const std::string& s) = 0;
-
+	
 public:
 	// TO DO: configurable rate of writing (by time or by number of events)
 	virtual void begin() {};	// Write file start

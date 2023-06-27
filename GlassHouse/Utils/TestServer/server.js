@@ -3,7 +3,13 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 
 const app = express();
-const port = 3000;
+const port = process.argv[2] || 3000; // Utiliza el valor del primer argumento de la línea de comandos o 3000 como puerto predeterminado
+
+// Validar que el puerto sea un valor numérico válido
+if (isNaN(port) || port < 2000 || port > 65535) {
+  console.error('El puerto especificado no es válido. Debe ser un número entre 2000 y 65535.');
+  process.exit(1); // Salir del script con código de error 1
+}
 
 // Configurar el servidor para que acepte solicitudes JSON
 app.use(bodyParser.json());
@@ -32,11 +38,11 @@ app.post('/data', (req, res) => {
       return;
     }
 
-    res.send('  Servidor : Archivo guardado exitosamente');
+    res.send('Servidor : Archivo guardado exitosamente');
   });
 });
 
 // Iniciar el servidor
 app.listen(port, () => {
-  console.log(`Servidor iniciado en http://localhost:${port}`);
+  console.log(`Servidor iniciado en http://localhost:${port}/data`);
 });

@@ -7,6 +7,7 @@
 
 #include <IPersistor.h>
 #include <string>
+#include <curl/curl.h>
 
 class GLASSHOUSE_API ServerPersistor : public IPersistor
 {
@@ -16,6 +17,12 @@ protected:
 	~ServerPersistor() {};
 
 	virtual void persist(const std::string& s) const;
+	virtual void open();
+	virtual void close();
 
 	std::string url;
+
+	CURL* server;
+
+	struct curl_slist* headers=NULL;
 };

@@ -17,7 +17,11 @@ protected:
 	
 	~FilePersistor() {};
 
-	virtual void persist(const std::string& s) const;
+	virtual void persist(const std::string& s)const;
+	virtual void open();
+	virtual void close();
 
 	std::string directory;
+
+	mutable std::ofstream output_file;
 };
