@@ -7,6 +7,8 @@
 
 #include <IPersistor.h>
 #include <string>
+#include <fstream>
+#include <iostream>
 
 class GLASSHOUSE_API FilePersistor : public IPersistor
 {
@@ -16,8 +18,6 @@ protected:
 	~FilePersistor() {};
 
 	virtual void persist(const std::string& s) const;
-	virtual void open();
-	virtual void close();
 
 	std::string directory;
 };

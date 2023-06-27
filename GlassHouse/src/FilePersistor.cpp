@@ -18,13 +18,3 @@ void FilePersistor::persist(const std::string& s) const
         std::cerr << "Error al guardar los datos en el archivo JSON: " << e.what() << std::endl;
     }
 }
-
-void FilePersistor::open()
-{
-
-}
-
-void FilePersistor::close()
-{
-
-}
