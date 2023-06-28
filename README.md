@@ -1,4 +1,4 @@
-## Setup
+# Setup
 ### Clone the GlassHouse repository into your project root directory. We recommend adding the project as a git submodule using
 ```git submodule add https://github.com/edekadt/GlassHouse-Telemetry GlassHouse-Telemetry```
 
@@ -20,55 +20,78 @@ Under C/C++ -> General -> Additional Include Directories add the following 2 lin
 .\GlassHouse-Telemetry\GlassHouse\src
 ```
 
-## Usage
-GlassHouse works off of an internal single instance, so you don't need to worry about creating or deleting an object. Simply boot the system with GlassHouse::init(...) at the start of your program and close it at the end with GlassHouse::close(). The argument for the init(...) function is the url or directory (based on persistor used) at which to save the tracked results.
+# Usage
 
+## Initialization
+GlassHouse works off of an internal single instance, so you don't need to worry about creating or deleting an object. Boot the tracker with GlassHouse::init(...) at the start of your program and close it at the end with GlassHouse::close(). 
+
+There are two versions of GlassHouse::Init(...). The first:
+```cpp
+GlassHouse::Init(SerializerType sType, PersistorType pType, std::string destination)
+```
+allows you to specify from among the built-in options for serialization (json) and persistence (local file or server), as well as specifying a directory or url to persist in.
+
+The second:
+```cpp
+GlassHouse::Init(ISerializer serializer, IPersistor persistor)
+```
+allows you to make use of user-defined serialization and/or persistence systems.
+
+## Tracking events
 By default, the system only collects two events: SESSION_START and SESSION_END; the start and end of the session. The base library also includes the GAME_START, GAME_END, LEVEL_START and LEVEL_END events, but it is down to the user when each of these events is sent.
 
-To send an event, call GlassHouse:enqueue(...) passing a new pointer to the desired event. For example:
+To track an event, call GlassHouse:enqueue(...) passing a new pointer to the desired event. The memory created is later deleted automatically. For example:
 ```c++
 GlassHouse::enqueue(new LevelStart());
 ```
 
-You can add new types of events with unique attributes by inheriting from the Events class found in Events.h. However, you must first extend the enum that lists all of the event types. 
-In the c++ file that defines your new event subclasees, define EXTEND_EVENT_DEFS in the following format:
-```c++
-#define EXTEND_EVENT_DEFS ,\
-NEW_EVENT_1, \
-NEW_EVENT_2, \
-NEW_EVENT_3, \
-NEW_EVENT_4, \
-NEW_EVENT_5
+## Creating new event types 
+You can add new types of events with unique attributes by inheriting from the Events class found in Events.h. A new event class requires an eventID, which is a string passed to the constructor of the base class, and used to discriminate different types of events.
+
+There is no control to prevent the user from creating different event types with the same name. However, doing so won't cause any issues beyond potential confusion.
+
+Any event can have additional data added to it via the Event.add(std::string key, Serializable value) method. The value added can be of any type that is implicitly castable to **size_t**, **int32_t**, **double**, **std::string** or **bool**. Each value is eventually serialized with its key.
+
+## Creating a new serialization system
+To serialize your data to a custom format, create a new object that inherits from ISerializer, then override the 
+```cpp
+void serialize(const Event& event, std::string& serializable)
 ```
-Alternatively, in a single line:
-```c++
-#define EXTEND_EVENT_DEFS , NEW_EVENT_1, NEW_EVENT_2, NEW_EVENT_3, NEW_EVENT_4, NEW_EVENT_5
-```
-IMPORTANTLY, this redefinition should appear before you include Events.h
+method to serialize a single event, storing the result in the string argument.
 
-### Subclass Serialization
-In order to correctly serialize the new attributes of a custom event, you must override the serializeToJSON() method, as so:
-```c++
-nlohmann::json WoundStart::serializeToJSON() const override
-{
-    nlohmann::json data = Events::serializeToJSON();
+### Additional options
+There are four other string fields of the serializer that can be used to add formatting:
 
-    data.push_back({ "AttributeName", attribute });
+**fileFormat** is the extension that the resulting file will use, including the '.' (i.e.: ".json").
 
-    return data;
-}
+**openingString** is written once at the very beggining of the file.
 
-```
+**separator** is written in between every two events, but not before the first one or after the last one (useful for things like line jumps).
+
+**closingString** is written once at the end of every file.
+
+## Creating a new persistence system
+To store the generated telemetry in a custom destination, create a new object that inherits from IPersistor and override the following methods:
+ ```cpp
+void persist(const std::string& s)
+void open()
+void close()
+ ```
+**persist(const std::string& s)** defines how a serialized string is stored in the destination.
+**open()** is called at the start of the program, and should open the file, establish connection to server, etc.
+**close()** is called at the end of the program, and should close the file, end connection to server, etc.
+
 ## Error Control
 If an exception causes your game to close before the SESSION_END event can be sent, you can call GlassHouse::emergencyClose() to seal off the json file with the correct syntax for it to be readable.
 
-## Data
-
+# Output
 Events captured by the telemetry system are stored in a json file located by default in the folder GlassHouse-data, within the same directory as your solution. Each session generates a uniquely ID'd file containing all the events.
 
 To change the directory in which files are stored, pass the desired directory as an argument of GlassHouse::init().
 
 We recommend excluding the folder you choose from your project's source code.
+
+
 
 ## Server
 To store your data on a remote server instead of in a local file, use the GlassHouse::setWriteMode(...) function. To avoid splitting data between the two locations, this should be done immediately after initializing the library.
