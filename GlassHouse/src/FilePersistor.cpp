@@ -1,7 +1,7 @@
 #include <FilePersistor.h>
 #include <iostream>
 #include <fstream>
-void FilePersistor::persist(const std::string& s) const
+void FilePersistor::persist(const std::string& s)
 {
     try {
         std::string dump = s;

@@ -1,7 +1,7 @@
 #include <ServerPersistor.h>
 
 #include <iostream>
-void ServerPersistor::persist(const std::string& s) const
+void ServerPersistor::persist(const std::string& s) 
 {
     try
     {

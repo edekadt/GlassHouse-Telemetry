@@ -5,10 +5,12 @@
 
 std::unique_ptr<GlassHouse> GlassHouse::instance = nullptr;
 
-GlassHouse::GlassHouse(std::string directory)
+GlassHouse::GlassHouse(ISerializer* ser, IPersistor* per)
 {
 	sessionID = std::hash<size_t>{}(std::time(0));
-	writerThread = new WriterThread(sessionID, directory);
+	serializer = ser;
+	persistor = per;
+	writerThread = new WriterThread(per);
 	writerThread->enqueue(new SessionStart(sessionID));
 }
 
@@ -16,12 +18,39 @@ GlassHouse::~GlassHouse()
 {
 	writerThread->enqueue(new SessionEnd(sessionID));
 	writerThread->close();
+	delete serializer;
+	delete persistor;
 	delete writerThread;
 }
 
-bool GlassHouse::init(std::string directory)
-{
-	instance.reset(new GlassHouse(directory));
+bool GlassHouse::init(ISerializer* ser, IPersistor* per) {
+	instance.reset(new GlassHouse(ser, per));
+	return true;
+}
+
+bool GlassHouse::init(SerializerType sType, PersistorType pType, std::string directory) {
+	ISerializer* ser = nullptr;
+	switch (sType){
+	case SerializerType::Json:
+		ser = new JsonSerializer();
+		break;
+	default:
+		return false;
+	}
+
+	IPersistor* per = nullptr;
+	switch (pType) {
+	case PersistorType::Local:
+		per = new FilePersistor(ser, directory);
+		break;
+	//case PersistorType::Server:
+	//	per = new ServerPersistor(ser, directory);
+	//	break;
+	default:
+		return false;
+	}
+
+	instance.reset(new GlassHouse(ser, per));
 	return true;
 }
 

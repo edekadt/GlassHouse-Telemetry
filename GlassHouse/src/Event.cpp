@@ -1,4 +1,5 @@
 #include "Event.h"
+#include <Serializable.h>
 
 Event::Event()
 {
@@ -14,34 +15,41 @@ Event::~Event()
     }
 }
 
-Event Event::add(std::string key, size_t val)
+SessionStart::SessionStart(size_t sessionID_) : Event("SESSION_START")
 {
-    content.insert({ key, new Serializable(val) });
-    return *this;
+    GameStart::gameCount = 0;
+    GameEnd::gameCount = 0;
+    add("SessionID", sessionID_);
 }
 
-Event Event::add(std::string key, int32_t val)
+Event* Event::add(std::string key, size_t val)
 {
     content.insert({ key, new Serializable(val) });
-    return *this;
+    return this;
 }
 
-Event Event::add(std::string key, double val)
+Event* Event::add(std::string key, int32_t val)
 {
     content.insert({ key, new Serializable(val) });
-    return *this;
+    return this;
 }
 
-Event Event::add(std::string key, std::string val)
+Event* Event::add(std::string key, double val)
 {
     content.insert({ key, new Serializable(val) });
-    return *this;
+    return this;
 }
 
-Event Event::add(std::string key, bool val)
+Event* Event::add(std::string key, std::string val)
 {
     content.insert({ key, new Serializable(val) });
-    return *this;
+    return this;
+}
+
+Event* Event::add(std::string key, bool val)
+{
+    content.insert({ key, new Serializable(val) });
+    return this;
 }
 
 

@@ -5,6 +5,7 @@
 #define GLASSHOUSE_API __declspec(dllimport)
 #endif
 
+#include <iostream>
 #include <vector>
 
 class ISerializer;
@@ -16,12 +17,11 @@ protected:
 	ISerializer* serializer;
 
 	IPersistor(ISerializer* serializer_): serializer(serializer_) {};
-	
-	~IPersistor() { serializer = nullptr; };
 
 	virtual void persist(const std::string& s) = 0;
 	
 public:
+	~IPersistor() { serializer = nullptr; };
 	// TO DO: configurable rate of writing (by time or by number of events)
 	virtual void begin() {};	// Write file start
 	virtual void end() {};		// Write file ending

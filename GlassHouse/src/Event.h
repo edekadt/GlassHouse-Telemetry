@@ -13,7 +13,8 @@
 #include <unordered_map>
 #include <iostream>
 #include <ctime>
-#include <Serializable.h>
+
+class Serializable;
 
 class GLASSHOUSE_API Event
 {
@@ -32,11 +33,11 @@ public:
 
 	~Event();
 
-	Event add(std::string key, size_t val);
-	Event add(std::string key, int32_t val);
-	Event add(std::string key, double val);
-	Event add(std::string key, std::string val);
-	Event add(std::string key, bool val);
+	Event* add(std::string key, size_t val);
+	Event* add(std::string key, int32_t val);
+	Event* add(std::string key, double val);
+	Event* add(std::string key, std::string val);
+	Event* add(std::string key, bool val);
 
 	std::string getType() const { return id; }
 	const std::unordered_map<std::string, Serializable*>& getContent() const { return content; }
@@ -47,13 +48,7 @@ public:
 class SessionStart : public Event
 {
 public:
-
-	SessionStart(size_t sessionID_) : Event("SESSION_START")
-	{
-		GameStart::gameCount = 0;
-		GameEnd::gameCount = 0;
-		add("SessionID", sessionID_);
-	}
+	SessionStart(size_t sessionID_);
 };
 
 class SessionEnd : public Event

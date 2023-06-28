@@ -16,7 +16,7 @@ public:
 	~Serializable() {};
 
 private:
-	enum validValue { ST, I, D, S, B}; // Size_t, Int, Double, String
+	enum validValue { ST, I, D, S, B}; // Size_t, Int, Double, String, Bool
 	validValue v;
 	union {
 		size_t st;

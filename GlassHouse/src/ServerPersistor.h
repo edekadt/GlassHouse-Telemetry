@@ -17,9 +17,9 @@ public:
 	~ServerPersistor() {};
 protected:
 
-	virtual void persist(const std::string& s) const;
-	virtual void open();
-	virtual void close();
+	virtual void persist(const std::string& s) override;
+	virtual void open() override;
+	virtual void close() override;
 
 	std::string url;
 

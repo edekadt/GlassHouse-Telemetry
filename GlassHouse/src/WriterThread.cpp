@@ -2,11 +2,10 @@
 #include <WriterThread.h>
 #include <Event.h>
 #include <IPersistor.h>
-#include <ISerializer.h>
 namespace fs = std::filesystem;
 
 
-WriterThread::WriterThread(size_t sessionID, IPersistor* persistor_, ISerializer* serializer_)
+WriterThread::WriterThread(IPersistor* per)
 {
     // Move to persistor and serializer
 
@@ -17,9 +16,7 @@ WriterThread::WriterThread(size_t sessionID, IPersistor* persistor_, ISerializer
     filePath = directory + "/GH_session_" + std::to_string(sessionID) + ".json";
     data = {};*/
 
-    session_ID = sessionID;
-    persistor = persistor_;
-    serializer = serializer_;
+    persistor = per;
 
 	eventQueue = moodycamel::ReaderWriterQueue<Event*>(INITIAL_QUEUE_SIZE);
 	thread = std::thread(&WriterThread::run, this);

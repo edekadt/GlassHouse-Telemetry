@@ -11,12 +11,10 @@ class Event;
 
 class GLASSHOUSE_API JsonSerializer: public ISerializer
 {
-protected:
-
+public:
 	JsonSerializer();
 
 	~JsonSerializer() {}
 
-public:
 	virtual void serialize(const Event& event, std::string& serializable) const;	// Serialize single element
 };

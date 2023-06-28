@@ -1,5 +1,6 @@
 #include <JsonSerializer.h>
 #include <Event.h>
+#include <Serializable.h>
 #include <nlohmann/json.hpp>
 
 JsonSerializer::JsonSerializer() : ISerializer()

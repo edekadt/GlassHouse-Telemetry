@@ -14,7 +14,8 @@
 #endif
 
 #include <memory>
-#include <WriteDestinations.h>
+#include <SerializerType.h>
+#include <PersistorType.h>
 #include <string>
 
 class WriterThread;
@@ -28,7 +29,8 @@ public:
 
 	// Initializes the singleton instance
 	// TO DO: Error handling
-	static bool init(std::string directory = "GlassHouse-data");
+	static bool init(ISerializer* ser, IPersistor* per);
+	static bool init(SerializerType sType, PersistorType pType, std::string directory = "GlassHouse-data");
 
 	// Closes the instance and frees memory
 	static bool close();
@@ -46,13 +48,17 @@ public:
 	//static void removeRecurringEvent();
 
 protected:
-	GlassHouse(std::string directory);
+	GlassHouse(ISerializer* ser, IPersistor* per);
+	ISerializer* serializer;
+	IPersistor* persistor;
+
 private:
 	static std::unique_ptr<GlassHouse> instance;
 
 	WriterThread* writerThread;
 
 	size_t sessionID;
+
 };
 
 #endif // GLASSHOUSE_H

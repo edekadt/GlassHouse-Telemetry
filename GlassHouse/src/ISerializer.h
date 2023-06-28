@@ -14,15 +14,13 @@ protected:
 
 	ISerializer(): fileFormat(""), openingString(""), separator(""), closingString("") {};
 
-	~ISerializer() {};
-
 	std::string fileFormat;
 	std::string openingString;
 	std::string separator;
 	std::string closingString;
 
 public:
-
+	~ISerializer() {};
 	inline std::string getFileFormat() const { return fileFormat; };	// Returns the file extension for the format, including the '.'
 	inline std::string getOpeningString() const { return openingString; };		// Used by formats that require special file beginnings
 	inline std::string getSeparator() const { return separator; };				// Character string that separates two serialized events

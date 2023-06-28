@@ -180,10 +180,11 @@
     <ClInclude Include="..\src\ISerializer.h" />
     <ClInclude Include="..\src\JsonSerializer.h" />
     <ClInclude Include="..\src\pch.h" />
+    <ClInclude Include="..\src\PersistorType.h" />
     <ClInclude Include="..\src\readerwriterqueue.h" />
     <ClInclude Include="..\src\Serializable.h" />
+    <ClInclude Include="..\src\SerializerType.h" />
     <ClInclude Include="..\src\ServerPersistor.h" />
-    <ClInclude Include="..\src\WriteDestinations.h" />
     <ClInclude Include="..\src\WriterThread.h" />
   </ItemGroup>
   <ItemGroup>

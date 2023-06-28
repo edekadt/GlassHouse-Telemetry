@@ -9,16 +9,14 @@
 #include <string>
 #include <thread>
 #include <readerwriterqueue.h>
-#include <WriteDestinations.h>
 
 class Event;
-class ISerializer;
 class IPersistor;
 
 class WriterThread
 {
 public:
-	WriterThread(size_t sessionID, IPersistor* persistor_, ISerializer* serializer_);
+	WriterThread(IPersistor* per);
 	~WriterThread() {};
 	void close();
 	void enqueue(Event* m);
@@ -27,9 +25,7 @@ public:
 private:
 	bool exit = false;
 
-	IPersistor* persistor;
-	ISerializer* serializer;
-	size_t session_ID;
+	IPersistor* persistor = nullptr;
 
 	moodycamel::ReaderWriterQueue<Event*> eventQueue;
 	std::thread thread;
