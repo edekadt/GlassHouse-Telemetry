@@ -41,8 +41,6 @@ public:
 
 	std::string getType() const { return id; }
 	const std::unordered_map<std::string, Serializable*>& getContent() const { return content; }
-
-	void releaseEvent(const Event* event) { delete event; }
 };
 
 class SessionStart : public Event
