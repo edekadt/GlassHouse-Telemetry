@@ -102,10 +102,14 @@ To change the directory in which files are stored, pass the desired directory as
 We recommend excluding the folder you choose from your project's source code.
 
 ## Server
-To store your data on a remote server instead of in a local file, use the GlassHouse::setWriteMode(...) function. To avoid splitting data between the two locations, this should be done immediately after initializing the library.
+To store your data on a remote server instead of in a local file, use the GlassHouse::init giving the server persistortype. For example
+```c++
+GlassHouse::init(SerializerType::Json, PersistorType::Server , "http://localhost:9999/data");
+```
+Powershell will show you the url after launching the server.
 
-To launch the testing server , go to .\Utils\TestServer folder, unzip the node_modules.zip then  run powershell and type the command.
+To launch the testing server , go to .\Utils\TestServer folder, unzip the node_modules.zip then  run powershell and type the command. Port is a number between 2000 and 65535.
 ```bash
-node .\server.js
-#Or node .\Utils\TestServer\server.js if you are on solution dir
+node .\server.js port
+#Or node .\Utils\TestServer\server.js port if you are on solution dir
 ```
