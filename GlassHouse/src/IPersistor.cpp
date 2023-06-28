@@ -10,3 +10,8 @@ bool IPersistor::write(Event* event)
 	persist(formattedString);
 	return true;
 }
+
+void IPersistor::setId(size_t id)
+{
+	this->id = id;
+}

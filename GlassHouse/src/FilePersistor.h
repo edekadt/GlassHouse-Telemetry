@@ -17,13 +17,12 @@ public:
 
 	~FilePersistor() {};
 	
-	void setId(size_t id_) { id = id_; };
 protected:
 	virtual void persist(const std::string& s) override;
 	virtual void open() override;
 	virtual void close() override;
 
 	std::string directory;
-	mutable std::ofstream output_file;
-	size_t id;
+	std::ofstream output_file;
+
 };

@@ -19,11 +19,14 @@ protected:
 	IPersistor(ISerializer* serializer_): serializer(serializer_) {};
 
 	virtual void persist(const std::string& s) = 0;
+
+	size_t id;
 	
 public:
-	~IPersistor() { serializer = nullptr; };
+	~IPersistor() { };
 	// TO DO: configurable rate of writing (by time or by number of events)
 	virtual void open() {};		// Open file/connect to server/etc
 	virtual void close() {};	// Close file/end server connection/etc
 	bool write(Event* events);	// Returns true on successful persistence
+	void setId(size_t id);
 };

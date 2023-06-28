@@ -10,10 +10,7 @@ GlassHouse::GlassHouse(ISerializer* ser, IPersistor* per)
 	sessionID = std::hash<size_t>{}(std::time(0));
 	serializer = ser;
 	persistor = per;
-	FilePersistor* fper = dynamic_cast<FilePersistor*>(per);
-	if (fper) {
-		fper->setId(sessionID);
-	}
+	per->setId(sessionID);
 	writerThread = new WriterThread(per);
 	writerThread->enqueue(new SessionStart(sessionID));
 }
