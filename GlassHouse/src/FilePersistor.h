@@ -24,5 +24,4 @@ protected:
 
 	std::string directory;
 	std::ofstream output_file;
-
 };

@@ -70,3 +70,13 @@ void GlassHouse::emergencyClose()
 {
 	instance.get()->writerThread->emergencyClose();
 }
+
+void GlassHouse::setEventLimit(size_t eventLimit)
+{
+	instance.get()->persistor->setEventLimit(eventLimit);
+}
+
+void GlassHouse::setTimeLimit(double timeLimit)
+{
+	instance.get()->persistor->setTimeLimit(timeLimit);
+}

@@ -41,6 +41,12 @@ public:
 	// Call in case of a captured exception to close off the file with the right format
 	static void emergencyClose();
 
+	// Set maximum number of events that can be enqueued before forcing a flush. Ignored if < 0;
+	static void setEventLimit(size_t eventLimit);
+
+	// Set maximum time (in seconds) that can pass between writes. Ignored if < 0.
+	static void setTimeLimit(double timeLimit);
+
 	// TO DO: Adds an event that will be queued every s seconds for as long as the system is running. Event is stored
 	// in a map under the key k and can be removed by calling removeRecurringEvent().
 	// Requires specifying tickrate

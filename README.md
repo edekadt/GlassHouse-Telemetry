@@ -25,17 +25,27 @@ Under C/C++ -> General -> Additional Include Directories add the following 2 lin
 ## Initialization
 GlassHouse works off of an internal single instance, so you don't need to worry about creating or deleting an object. Boot the tracker with GlassHouse::init(...) at the start of your program and close it at the end with GlassHouse::close(). 
 
-There are two versions of GlassHouse::Init(...). The first:
+There are two versions of GlassHouse::init(...). The first:
 ```cpp
-GlassHouse::Init(SerializerType sType, PersistorType pType, std::string destination)
+GlassHouse::init(SerializerType sType, PersistorType pType, std::string destination)
 ```
 allows you to specify from among the built-in options for serialization (json) and persistence (local file or server), as well as specifying a directory or url to persist in.
 
 The second:
 ```cpp
-GlassHouse::Init(ISerializer serializer, IPersistor persistor)
+GlassHouse::init(ISerializer serializer, IPersistor persistor)
 ```
 allows you to make use of user-defined serialization and/or persistence systems.
+
+## Configuration
+By default, the tracker only writes its events at the end of the program, in GlassHouse::close(). There are two additional settings that can be adjusted to write more often, using the following functions: 
+```cpp
+void setEventLimit(size_t eventLimit)
+void setTimeLimit(double timeLimit)
+```
+The event limit refers to a number of events that can be accumulated in the system; once the number exceeds this limit, the events are persisted. Note: due to the concurrent queue used internally, the number of events stored is only an estimate.
+
+The time limit refers to the maximum amount of time that is allowed to pass between two flushes. Any time a flush occurs, the timer is reset. Once the timer exceeds the established limit, stored events are flushed and persisted.
 
 ## Tracking events
 By default, the system only collects two events: SESSION_START and SESSION_END; the start and end of the session. The base library also includes the GAME_START, GAME_END, LEVEL_START and LEVEL_END events, but it is down to the user when each of these events is sent.
@@ -90,8 +100,6 @@ Events captured by the telemetry system are stored in a json file located by def
 To change the directory in which files are stored, pass the desired directory as an argument of GlassHouse::init().
 
 We recommend excluding the folder you choose from your project's source code.
-
-
 
 ## Server
 To store your data on a remote server instead of in a local file, use the GlassHouse::setWriteMode(...) function. To avoid splitting data between the two locations, this should be done immediately after initializing the library.

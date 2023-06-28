@@ -50,7 +50,8 @@ void WriterThread::run()
 	{
         auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - begin);
         // If max number of events or max time since last flush has been exceeded, flush
-        if (eventQueue.size_approx() > persistor->getMaxEvents() || elapsedTime > (std::chrono::milliseconds)persistor->getFlushTimer())
+        if (persistor->getMaxEvents() > 0 && eventQueue.size_approx() > persistor->getMaxEvents() ||
+            (persistor->getFlushTimer() > 0 && elapsedTime > (std::chrono::milliseconds)persistor->getFlushTimer()))
             flush();
 	}
     flush();

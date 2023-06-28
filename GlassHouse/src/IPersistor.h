@@ -27,7 +27,6 @@ protected:
 	
 public:
 	virtual ~IPersistor() { };
-	// TO DO: configurable rate of writing (by time or by number of events)
 	virtual void open() {};		// Open file/connect to server/etc
 	virtual void close() {};	// Close file/end server connection/etc
 	bool write(Event* events);	// Returns true on successful persistence
