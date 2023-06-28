@@ -54,4 +54,6 @@ void ServerPersistor::close()
     {
         std::cerr << "Error al cerrar servidor: " << e.what() << std::endl;
     }
+    delete headers;
+    delete server;
 }

@@ -1,6 +1,8 @@
 #include <FilePersistor.h>
 #include <iostream>
 #include <fstream>
+#include <filesystem>
+namespace fs = std::filesystem;
 void FilePersistor::persist(const std::string& s)
 {
     try {
@@ -19,6 +21,11 @@ void FilePersistor::persist(const std::string& s)
 
 void FilePersistor::open()
 {
+    if (!fs::is_directory(directory) || !fs::exists(directory)) { // Check if folder exists
+        fs::create_directory(directory); // create folder
+    }
+    directory = directory + "/GH_session_" + std::to_string(id) + ".json";
+
     try {
         output_file.open(directory, std::ios::app);
         std::cout << "Archivo abierto en " << directory << std::endl;

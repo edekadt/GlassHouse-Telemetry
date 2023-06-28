@@ -24,6 +24,7 @@ WriterThread::WriterThread(IPersistor* per)
 
 void WriterThread::close()
 {
+    exit = true;
 	thread.join();
 }
 
