@@ -21,7 +21,7 @@ Under C/C++ -> General -> Additional Include Directories add the following 2 lin
 ```
 
 ## Usage
-GlassHouse works off of an internal single instance, so you don't need to worry about creating or deleting an object. Simply boot the system with GlassHouse::init() at the start of your program and close it at the end with GlassHouse::close().
+GlassHouse works off of an internal single instance, so you don't need to worry about creating or deleting an object. Simply boot the system with GlassHouse::init(...) at the start of your program and close it at the end with GlassHouse::close(). The argument for the init(...) function is the url or directory (based on persistor used) at which to save the tracked results.
 
 By default, the system only collects two events: SESSION_START and SESSION_END; the start and end of the session. The base library also includes the GAME_START, GAME_END, LEVEL_START and LEVEL_END events, but it is down to the user when each of these events is sent.
 

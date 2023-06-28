@@ -50,6 +50,8 @@ public:
 
 	SessionStart(size_t sessionID_) : Event("SESSION_START")
 	{
+		GameStart::gameCount = 0;
+		GameEnd::gameCount = 0;
 		add("SessionID", sessionID_);
 	}
 };
@@ -63,31 +65,50 @@ public:
 	}
 };
 
+// If user does not pass a specific ID for each game, the game's number since the start of the session is used as its ID
 class GameStart : public Event
 {
+	friend SessionStart;
+	static int32_t gameCount;
 public:
 
 	GameStart(int32_t gameID_) : Event("GAME_START")
 	{
 		add("GameID", gameID_);
 	}
+
+	GameStart() : Event("GAME_START")
+	{
+		add("GameID", gameCount++);
+	}
 };
 
 class GameEnd : public Event
 {
+	friend SessionStart;
+	static int32_t gameCount;
 public: 
 
 	GameEnd(int32_t gameID_) : Event("GAME_END")
 	{
 		add("GameID", gameID_);
 	}
+
+	GameEnd() : Event("GAME_END")
+	{
+		add("GameID", gameCount++);
+	}
 };
 
 class LevelStart : public Event
 {
 public:
-
 	LevelStart(std::string levelID_) : Event("LEVEL_START")
+	{
+		add("LevelID", levelID_);
+	}
+
+	LevelStart(int32_t levelID_) : Event("LEVEL_START")
 	{
 		add("LevelID", levelID_);
 	}
@@ -98,6 +119,11 @@ class LevelEnd : public Event
 public:
 
 	LevelEnd(std::string levelID_) : Event("LEVEL_END")
+	{
+		add("LevelID", levelID_);
+	}
+
+	LevelEnd(int32_t levelID_) : Event("LEVEL_END")
 	{
 		add("LevelID", levelID_);
 	}
