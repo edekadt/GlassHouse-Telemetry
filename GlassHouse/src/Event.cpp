@@ -43,3 +43,7 @@ Event Event::add(std::string key, bool val)
     content.insert({ key, new Serializable(val) });
     return *this;
 }
+
+
+int32_t GameStart::gameCount = 0;
+int32_t GameEnd::gameCount = 0;
