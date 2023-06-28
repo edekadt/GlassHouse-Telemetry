@@ -29,16 +29,26 @@ app.get('/data', (req, res) => {
 
 // Configurar el servidor para que acepte solicitudes HTTP POST con el archivo JSON en el cuerpo de la solicitud.
 app.post('/data', (req, res) => {
+  // const data = req.body;
+
+  // fs.writeFile('data.json', JSON.stringify(data), err => {
+  //   if (err) {
+  //     console.error(err);
+  //     res.status(500).send('Error interno del servidor');
+  //     return;
+  //   }
+  //   console.log(JSON.stringify(data));
+  //   res.send('Servidor : Archivo guardado exitosamente');
   const data = req.body;
 
-  fs.writeFile('data.json', JSON.stringify(data), err => {
+  fs.appendFile('data.json', JSON.stringify(data) + '\n', err => {
     if (err) {
       console.error(err);
       res.status(500).send('Error interno del servidor');
       return;
     }
-
-    res.send('Servidor : Archivo guardado exitosamente');
+    console.log(JSON.stringify(data));
+    res.send('Servidor: Archivo guardado exitosamente');
   });
 });
 

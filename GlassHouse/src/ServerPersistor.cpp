@@ -1,5 +1,5 @@
 #include <ServerPersistor.h>
-
+#include <curl/curl.h>
 #include <iostream>
 void ServerPersistor::persist(const std::string& s) 
 {
