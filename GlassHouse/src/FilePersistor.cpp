@@ -1,4 +1,5 @@
 #include <FilePersistor.h>
+#include <ISerializer.h>
 #include <iostream>
 #include <fstream>
 #include <filesystem>
@@ -24,7 +25,8 @@ void FilePersistor::open()
     if (!fs::is_directory(directory) || !fs::exists(directory)) { // Check if folder exists
         fs::create_directory(directory); // create folder
     }
-    directory = directory + "/GH_session_" + std::to_string(id) + ".json";
+
+    directory = directory + "/GH_session_" + std::to_string(id) + serializer->getFileFormat();
 
     try {
         output_file.open(directory, std::ios::app);
