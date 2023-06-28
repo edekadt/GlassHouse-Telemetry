@@ -22,7 +22,7 @@ private:
 		size_t st;
 		int32_t i;
 		double d;
-		std::string s;
 		bool b;
 	};
+	std::string s;
 };
