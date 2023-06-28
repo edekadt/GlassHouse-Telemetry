@@ -12,16 +12,16 @@
 
 class GLASSHOUSE_API FilePersistor : public IPersistor
 {
-protected:
-	FilePersistor(ISerializer* serializer_, std::string directory_): IPersistor(serializer_), directory(directory_) {};
-	
+public:
+	FilePersistor(ISerializer* serializer_, std::string directory_) : IPersistor(serializer_), directory(directory_) {};
+
 	~FilePersistor() {};
 
-	virtual void persist(const std::string& s)const;
+protected:
+	virtual void persist(const std::string& s) const;
 	virtual void open();
 	virtual void close();
 
 	std::string directory;
-
 	mutable std::ofstream output_file;
 };
