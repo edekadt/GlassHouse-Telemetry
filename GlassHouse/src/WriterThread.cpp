@@ -52,7 +52,6 @@ void WriterThread::run()
         // If max number of events or max time since last flush has been exceeded, flush
         if (eventQueue.size_approx() > persistor->getMaxEvents() || elapsedTime > (std::chrono::milliseconds)persistor->getFlushTimer())
             flush();
-        Sleep(EVENT_THREAD_TIME);
 	}
     flush();
 
