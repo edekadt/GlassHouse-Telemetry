@@ -23,9 +23,10 @@ protected:
 	size_t maxEvents = -1;		// Maximum number of events that can be enqueued before forcing a flush. Ignored if < 0;
 	size_t queuedEvents = 0;	// Number of queued events
 	double flushTimer = -1;		// Maximum time (in milliseconds) that can pass between writes. Ignored if < 0.
+	size_t id;
 	
 public:
-	~IPersistor() { serializer = nullptr; };
+	~IPersistor() { };
 	// TO DO: configurable rate of writing (by time or by number of events)
 	virtual void open() {};		// Open file/connect to server/etc
 	virtual void close() {};	// Close file/end server connection/etc
@@ -38,4 +39,5 @@ public:
 
 	inline size_t getMaxEvents() { return maxEvents; };
 	inline size_t getFlushTimer() { return flushTimer; };
+	void setId(size_t id);
 };

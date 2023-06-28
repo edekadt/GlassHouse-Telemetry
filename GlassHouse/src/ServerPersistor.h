@@ -7,7 +7,9 @@
 
 #include <IPersistor.h>
 #include <string>
-#include <curl/curl.h>
+
+typedef void CURL;
+struct curl_slist;
 
 class GLASSHOUSE_API ServerPersistor : public IPersistor
 {

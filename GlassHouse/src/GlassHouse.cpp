@@ -10,6 +10,7 @@ GlassHouse::GlassHouse(ISerializer* ser, IPersistor* per)
 	sessionID = std::hash<size_t>{}(std::time(0));
 	serializer = ser;
 	persistor = per;
+	per->setId(sessionID);
 	writerThread = new WriterThread(per);
 	writerThread->enqueue(new SessionStart(sessionID));
 }
@@ -43,9 +44,9 @@ bool GlassHouse::init(SerializerType sType, PersistorType pType, std::string dir
 	case PersistorType::Local:
 		per = new FilePersistor(ser, directory);
 		break;
-	//case PersistorType::Server:
-	//	per = new ServerPersistor(ser, directory);
-	//	break;
+	case PersistorType::Server:
+		per = new ServerPersistor(ser, directory);
+		break;
 	default:
 		return false;
 	}

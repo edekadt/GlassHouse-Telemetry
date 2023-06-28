@@ -17,6 +17,8 @@ void JsonSerializer::serialize(const Event& event, std::string& serializable) co
 
 	const auto& content = event.getContent();
 
+	jsonObj.push_back({ "EventID", event.getType() });
+
 	for (auto& it : content) {
 		jsonObj.push_back({ it.first, it.second->toString() });
 	}

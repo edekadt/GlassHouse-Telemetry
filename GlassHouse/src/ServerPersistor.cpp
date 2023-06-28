@@ -1,5 +1,5 @@
 #include <ServerPersistor.h>
-
+#include <curl/curl.h>
 #include <iostream>
 void ServerPersistor::persist(const std::string& s) 
 {
@@ -54,4 +54,6 @@ void ServerPersistor::close()
     {
         std::cerr << "Error al cerrar servidor: " << e.what() << std::endl;
     }
+    delete headers;
+    delete server;
 }
