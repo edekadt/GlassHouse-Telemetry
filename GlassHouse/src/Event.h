@@ -31,7 +31,7 @@ public:
 
 	Event();
 
-	~Event();
+	virtual ~Event();
 
 	Event* add(std::string key, size_t val);
 	Event* add(std::string key, int32_t val);

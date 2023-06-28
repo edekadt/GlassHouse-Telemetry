@@ -26,7 +26,7 @@ protected:
 	size_t id;
 	
 public:
-	~IPersistor() { };
+	virtual ~IPersistor() { };
 	// TO DO: configurable rate of writing (by time or by number of events)
 	virtual void open() {};		// Open file/connect to server/etc
 	virtual void close() {};	// Close file/end server connection/etc
