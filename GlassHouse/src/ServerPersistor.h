@@ -11,10 +11,11 @@
 
 class GLASSHOUSE_API ServerPersistor : public IPersistor
 {
-protected:
+public:
 	ServerPersistor(ISerializer* serializer_, std::string url_) : IPersistor(serializer_), url(url_) {};
 
 	~ServerPersistor() {};
+protected:
 
 	virtual void persist(const std::string& s) const;
 	virtual void open();
