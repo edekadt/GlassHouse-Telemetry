@@ -20,6 +20,8 @@ WriterThread::WriterThread(IPersistor* per)
 
 	eventQueue = moodycamel::ReaderWriterQueue<Event*>(INITIAL_QUEUE_SIZE);
 	thread = std::thread(&WriterThread::run, this);
+
+    begin = std::chrono::steady_clock::now();
 }
 
 void WriterThread::close()
@@ -43,22 +45,26 @@ void WriterThread::run()
 {
     persistor->open();
 
-    Event* event;
-
 	while (!exit)
 	{
-        while (eventQueue.try_dequeue(event)) {
-            persistor->write(event);
-            delete event;
-        }
-
+        auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - begin);
+        // If max number of events or max time since last flush has been exceeded, flush
+        if (eventQueue.size_approx() > persistor->getMaxEvents() || elapsedTime > (std::chrono::milliseconds)persistor->getFlushTimer())
+            flush();
         Sleep(EVENT_THREAD_TIME);
 	}
+    flush();
 
+    persistor->close();
+}
+
+void WriterThread::flush()
+{
+    Event* event;
     while (eventQueue.try_dequeue(event)) {
         persistor->write(event);
         delete event;
     }
-
-    persistor->close();
+    begin = std::chrono::steady_clock::now();
 }
+
