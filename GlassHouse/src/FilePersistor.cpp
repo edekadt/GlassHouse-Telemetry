@@ -26,10 +26,10 @@ void FilePersistor::open()
         fs::create_directory(directory); // create folder
     }
 
-    std::string file = directory + "/GH_session_" + std::to_string(id) + serializer->getFileFormat();
+    directory = directory + "/GH_session_" + std::to_string(id) + serializer->getFileFormat();
 
     try {
-        output_file.open(file, std::ios::app);
+        output_file.open(directory, std::ios::app);
         std::cout << "Archivo abierto en " << directory << std::endl;
     }
     catch (std::exception& e) {
